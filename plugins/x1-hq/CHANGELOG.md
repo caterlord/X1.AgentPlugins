@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.1.2
+
+- Reuse workspace, company, brand, and shop mappings already verified during
+  the active authenticated conversation.
+- Automatically select uniquely resolved workspace paths and collapse
+  single-option company, brand, and shop levels without redundant questions.
+- Ask for scope clarification only when multiple matching hierarchy paths
+  remain, with regression coverage for unique and duplicate-name cases.
+
 ## 0.1.1
 
 - Bind the package to the verified `X1 HQ Agent` ChatGPT app registration.

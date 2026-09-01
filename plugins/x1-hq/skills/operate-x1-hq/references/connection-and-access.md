@@ -11,12 +11,18 @@ approval for a particular change as separate decisions.
   identity headers or names as authority.
 - Summarize the selected workspace and effective capability level in plain
   language after bootstrap. Do not list internal scope codes unless asked.
-- If several workspaces are available, ask one concise question before making
-  business-data calls. Do not silently restore a workspace after reconnection.
+- If several workspaces are available, match the user's named company, brand,
+  or shop and reuse hierarchy mappings verified earlier in the same active
+  connection. Select a uniquely matching workspace automatically; ask one
+  concise question only when multiple required paths remain.
+- Do not silently restore a workspace after reconnection. Refresh the hierarchy,
+  then automatically select a unique current path when one exists.
 - Default to available read-only work. Before asking for additional access,
   explain the exact job it enables. If the user declines, continue with work
   already permitted.
-- Access to reservation guest details is a separate opt-in.
+- Reservation guest details require the dedicated `booking.read` scope. The
+  production read-only default grant includes this scope by product-policy
+  decision, but the agent must respect an explicit denial or missing grant.
 
 ## Connection states
 

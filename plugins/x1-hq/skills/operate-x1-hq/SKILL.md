@@ -4,7 +4,7 @@ description: Perform everyday X1 HQ operations across menus, prices, availabilit
 compatibility: Requires an Agent Plugins client with Agent Skills and Streamable HTTP MCP support, plus access to the X1 HQ MCP gateway.
 metadata:
   author: X1
-  version: "0.1.0"
+  version: "0.1.1"
 ---
 
 # Operate X1 HQ
@@ -35,16 +35,28 @@ before workspace bootstrap on a new connection or after any connection error.
    connection and whenever freshness or compatibility is uncertain. Use its
    operator-safe state; do not expose deployment details.
 2. Call `list_hq_workspace_options` on a new authenticated connection.
-3. If exactly one workspace is available, select it with
-   `commit_set_hq_workspace`. Workspace selection changes connection context;
-   it is not an X1 HQ business-data mutation.
-4. If several workspaces are available, use the user's named company, brand, or
-   shop to disambiguate. Ask one concise question only when the target remains
-   ambiguous.
-5. Resolve business names through discovery tools or
+3. Build candidate workspace/company/brand/shop paths from the current
+   selection, the user's explicit names, and hierarchy mappings already
+   verified during this authenticated connection.
+4. If exactly one candidate path remains at the level required by the request,
+   select its workspace with `commit_set_hq_workspace` and infer every
+   single-option parent level. This includes a named company, brand, or shop
+   that uniquely identifies one of several workspaces. Workspace selection
+   changes connection context; it is not an X1 HQ business-data mutation and
+   does not need business-change approval.
+5. Ask one concise question only when two or more candidate paths still match
+   at a level the operation requires. Never ask the user to confirm a unique
+   workspace, company, brand, or shop merely to restate discovered context.
+6. Resolve business names through discovery tools or
    `resolve_hq_scope_reference`. Never invent identifiers.
-6. Never silently change an already selected workspace. Restate the effective
-   brand and shop in every business-change preview.
+7. Reuse verified mappings only while the authenticated connection remains
+   valid. Refresh after reconnect, revocation, permission change, or a gateway
+   request to reselect workspace context.
+8. Keep an existing selection when the user provides no contrary target. A
+   uniquely resolved explicit target in another workspace is sufficient to
+   change connection context; invalidate old previews and re-read before any
+   business change. Restate the effective brand and shop in every
+   business-change preview.
 
 See [references/workspace-and-scope.md](references/workspace-and-scope.md) for
 selection and ambiguity rules.

@@ -4,7 +4,7 @@ description: Analyze X1 HQ sales, item and category performance, payments, order
 compatibility: Requires an Agent Plugins client with Agent Skills and Streamable HTTP MCP support, plus access to the X1 HQ MCP gateway.
 metadata:
   author: X1
-  version: "0.1.0"
+  version: "0.1.1"
 ---
 
 # Analyze X1 HQ reports
@@ -33,9 +33,16 @@ on a new connection or after a connection error.
 1. Call `get_mcp_gateway_status`, then on a new authenticated connection call
    `list_hq_workspace_options` and
    select the intended workspace with `commit_set_hq_workspace`.
-2. Resolve named companies, brands, and shops. Never invent identifiers.
-3. State the effective company, brand, shops, and currency in financial answers.
-4. If the target remains ambiguous, ask one concise disambiguation question.
+2. Build candidate hierarchy paths from explicit names, the current selection,
+   and mappings already verified in this authenticated conversation. Infer every
+   single-option workspace, company, brand, and shop level automatically.
+3. A company, brand, or shop that uniquely identifies one of several
+   workspaces is sufficient to select that workspace. Do not ask the user to
+   reconfirm unique parent levels.
+4. Resolve named companies, brands, and shops. Never invent identifiers.
+5. State the effective company, brand, shops, and currency in financial answers.
+6. Ask one concise disambiguation question only when multiple candidate paths
+   remain at a level the report requires.
 
 ## Resolve the reporting question
 

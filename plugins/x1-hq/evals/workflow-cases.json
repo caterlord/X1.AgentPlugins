@@ -234,8 +234,65 @@
       ],
       "invariants": [
         "workspace-selection",
-        "no-silent-workspace-selection",
+        "ask-only-if-multiple-matching-paths",
         "ask-only-blocking-question"
+      ]
+    },
+    {
+      "id": "reuse-discovered-brand-workspace",
+      "skill": "operate-x1-hq",
+      "prompt": "You already showed that Testing Company / Testing Brand belongs to workspace-m. Now list its item categories.",
+      "expectedTools": [
+        "commit_set_hq_workspace",
+        "list_item_categories"
+      ],
+      "invariants": [
+        "reuse-current-connection-scope-mapping",
+        "automatic-unique-path-selection",
+        "no-confirmation-for-unique-scope",
+        "workspace-context-not-business-mutation"
+      ]
+    },
+    {
+      "id": "single-hierarchy-brand-question",
+      "skill": "operate-x1-hq",
+      "prompt": "This account has one workspace and one company. List the available brands.",
+      "expectedTools": [
+        "list_hq_workspace_options",
+        "commit_set_hq_workspace"
+      ],
+      "invariants": [
+        "auto-collapse-single-workspace-company",
+        "no-confirmation-for-unique-scope",
+        "workspace-context-not-business-mutation"
+      ]
+    },
+    {
+      "id": "single-hierarchy-shop-question",
+      "skill": "operate-x1-hq",
+      "prompt": "This account has one workspace, company, brand, and shop. Show the shop's printer settings.",
+      "expectedTools": [
+        "list_hq_workspace_options",
+        "commit_set_hq_workspace",
+        "get_device_settings_snapshot"
+      ],
+      "invariants": [
+        "auto-collapse-single-workspace-company-brand-shop",
+        "no-confirmation-for-unique-scope",
+        "workspace-context-not-business-mutation"
+      ]
+    },
+    {
+      "id": "duplicate-brand-across-workspaces",
+      "skill": "operate-x1-hq",
+      "prompt": "List categories for the Central brand, which exists in more than one workspace.",
+      "expectedTools": [
+        "list_hq_workspace_options"
+      ],
+      "invariants": [
+        "multiple-matching-paths-require-clarification",
+        "shortest-useful-disambiguation",
+        "no-invented-ids"
       ]
     },
     {
