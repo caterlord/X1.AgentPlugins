@@ -1,0 +1,16 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "x1-hq",
+  "version": "0.1.0",
+  "description": "Operate and analyze X1 HQ through authenticated, tenant-scoped MCP workflows.",
+  "author": {
+    "name": "X1"
+  },
+  "keywords": [
+    "x1",
+    "pos",
+    "restaurant-operations",
+    "menu-management",
+    "reporting"
+  ]
+}

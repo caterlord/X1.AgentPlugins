@@ -1,0 +1,20 @@
+{
+  "name": "x1-plugins",
+  "interface": {
+    "displayName": "X1 Plugins"
+  },
+  "plugins": [
+    {
+      "name": "x1-hq",
+      "source": {
+        "source": "local",
+        "path": "./plugins/x1-hq"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Business"
+    }
+  ]
+}
