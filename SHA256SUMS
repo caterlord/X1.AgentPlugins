@@ -1,10 +1,10 @@
-39a439f79f806f3c9463251281fefde2ef4b9c209091903c5659e2fe286d2ca0  plugins/x1-hq/.app.json
-b95efe94bd86b5658f1a8e5f83c4e5ccd05525c316aa3b2fc36644baabde69ad  plugins/x1-hq/.codex-plugin/plugin.json
-30813008264250662c4751730e627738d919247e8911019d2dd91aa26db35d04  plugins/x1-hq/CHANGELOG.md
+2d687a9d9e57c355488e504dde4b5636171db1b2375e7bd74312e85e69084a08  plugins/x1-hq/.app.json
+adc43f8606658e3293119dd1a7e83530faa36e4d2968531b2d755b4f37c8172c  plugins/x1-hq/.codex-plugin/plugin.json
+dbd3491d2dd0d05601cdb0357318b37361e015346a48439ac242d7f67c2a714b  plugins/x1-hq/CHANGELOG.md
 ade1bb23b2f11f14db1452aa56e635c3f2b5c0d3a02e1aa04ba7fd446db04c95  plugins/x1-hq/README.md
 b5ea427b015141ceda9882209878d9b57c4c354369a12f67ad2517f66155edd5  plugins/x1-hq/evals/workflow-cases.json
 52a8e4294ec7a7b9882f4364f10401a3a31cf017215e45e201a0a49c4b088202  plugins/x1-hq/mcp.json
-9480f9baef067075ee8f884aa955d47cc92e1bb32074c8ccf73a9829eb65d7fa  plugins/x1-hq/plugin.json
+bb8cf55ed9315dd998e9862dac987fd16d65097f00fccfa315eb607bc5ab5f8c  plugins/x1-hq/plugin.json
 02b19604f9b7b6b3f2949b4fd2af3ec6436403357be3b5a0c17979da587a0af8  plugins/x1-hq/schemas/README.md
 4c357db0e4359280ce055b98bf167fca548bed3a8992391d4ecff64276e3e6c7  plugins/x1-hq/schemas/mcp.schema.json
 cc65b53b668db7038f8ce1473c00f41740303ea0a0ec3e2c694e63cb51bfe0a2  plugins/x1-hq/schemas/plugin.schema.json
