@@ -4,7 +4,7 @@ description: Perform everyday X1 HQ operations across menus, prices, availabilit
 compatibility: Requires an Agent Plugins client with Agent Skills and Streamable HTTP MCP support, plus access to the X1 HQ MCP gateway.
 metadata:
   author: X1
-  version: "0.1.1"
+  version: "0.1.2"
 ---
 
 # Operate X1 HQ
@@ -89,6 +89,9 @@ for consolidation and partial-success rules.
 - Treat diagnostic recommendations as information, not permission to mutate.
 - For menu authoring and import work, follow
   [references/menu-operations.md](references/menu-operations.md).
+- When the source is a PDF, image, spreadsheet, CSV, pasted menu, or another
+  customer document, hand off extraction and the pre-import review loop to the
+  `import-menu-from-document` skill.
 - For device, store, online-ordering, or access-related work, follow
   [references/settings-devices-and-access.md](references/settings-devices-and-access.md).
 

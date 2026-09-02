@@ -1,12 +1,15 @@
 # X1 HQ Agent Plugin
 
 X1 HQ is a conversational operating and reporting plugin for X1 merchants. The
-workspace-native package combines an OpenAI plugin wrapper, two Agent Skills,
+workspace-native package combines an OpenAI plugin wrapper, three Agent Skills,
 and the registered X1 HQ Agent app backed by the hosted X1 HQ MCP gateway:
 
 - `operate-x1-hq` handles everyday operational work across menus, settings,
   devices, online ordering, and other capabilities exposed by the gateway.
 - `analyze-x1-hq-reports` handles read-only reporting and investigation.
+- `import-menu-from-document` handles resumable PDF, image, spreadsheet, CSV,
+  and pasted-menu extraction, complete table review, explicit approval, and
+  server-side approved commit handoff.
 
 The skills are conversational operating guides. They contain no credentials,
 do not call X1 HQ APIs directly, and grant no permission. The MCP gateway is the
@@ -16,11 +19,11 @@ breakers.
 
 ## Current pilot status
 
-The hosted gateway is currently in read-only pilot mode. Reporting and
-inspection tools are available according to the signed-in HQ user's existing
-permissions. Business-data writes are blocked at the gateway even if a client
-has cached an older tool list. X1 may narrow, disable, or later enable
-capabilities without requiring users to reinstall this plugin.
+The hosted gateway is in a controlled write-enabled staging pilot. Available
+reads, previews, and commits still depend on the signed-in HQ user's delegated
+scopes, workspace permissions, tenant scope, and the gateway's current rollout
+gates. X1 may narrow or disable capabilities without requiring users to
+reinstall this plugin.
 
 ## Compatibility
 

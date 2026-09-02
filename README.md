@@ -20,7 +20,7 @@ For a reproducible installation, pin the marketplace to a published release
 tag:
 
 ```sh
-codex plugin marketplace add caterlord/X1.AgentPlugins --ref v0.1.3
+codex plugin marketplace add caterlord/X1.AgentPlugins --ref v0.3.3
 ```
 
 ## Available plugin
@@ -32,10 +32,11 @@ It helps an assistant resolve workspace and shop scope, inspect menus and device
 settings, analyze reports, prepare previews, request genuine approvals, verify
 outcomes, and return one consolidated operational report.
 
-The first public pilot is read-only. The gateway—not the skill text—is the
-authority for every capability. Authentication, user permissions, workspace
-scope, approval requirements, audit rules, quotas, feature flags, and circuit
-breakers are all enforced server-side.
+The current pilot is a controlled write-enabled staging rollout. The
+gateway—not the skill text—is the authority for every capability.
+Authentication, delegated scopes, user permissions, workspace scope, approval
+requirements, audit rules, quotas, feature flags, and circuit breakers are all
+enforced server-side.
 
 See [`plugins/x1-hq`](plugins/x1-hq) for the workspace-native package, skills,
 capability references, and evaluation cases. Portable Agent Plugins 1.0.0

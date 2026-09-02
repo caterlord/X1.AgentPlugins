@@ -2,6 +2,35 @@
   "version": "1.0.0",
   "cases": [
     {
+      "id": "bilingual-pdf-menu-resumable-pre-import",
+      "skill": "import-menu-from-document",
+      "prompt": "Import this bilingual PDF menu into the confirmed Hong Kong brand 生財滷味. The PDF says 生記滷鵝, lists dine-in and takeaway only, and A15 has an incomplete two-choice rule. Stop after a safe preview.",
+      "expectedTools": [
+        "get_mcp_gateway_status",
+        "list_hq_workspace_options",
+        "commit_set_hq_workspace",
+        "resolve_hq_scope_reference",
+        "get_menu_catalog_draft_schema",
+        "get_menu_authoring_context",
+        "start_menu_import_session",
+        "validate_menu_catalog_draft",
+        "patch_menu_import_session",
+        "preview_import_menu_catalog"
+      ],
+      "invariants": [
+        "workspace-selection",
+        "no-invented-ids",
+        "source-evidence-preserved",
+        "source-target-mismatch-confirmed",
+        "unmentioned-channels-not-enabled",
+        "hong-kong-non-taxable-without-sales-tax-question",
+        "resumable-draft-session",
+        "review-questions-deduplicated",
+        "preview-before-commit",
+        "explicit-approval"
+      ]
+    },
+    {
       "id": "single-workspace-price-change",
       "skill": "operate-x1-hq",
       "prompt": "Increase every hot drink at Central by HKD 1.",

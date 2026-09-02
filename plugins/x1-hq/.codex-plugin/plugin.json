@@ -1,7 +1,7 @@
 {
   "name": "x1-hq",
-  "version": "0.1.3",
-  "description": "Operate and analyze X1 HQ through authenticated, tenant-scoped workflows.",
+  "version": "0.3.3",
+  "description": "Operate, analyze, and import menus into X1 HQ through authenticated, tenant-scoped workflows.",
   "author": {
     "name": "X1",
     "url": "https://x1.tech"
@@ -13,24 +13,27 @@
     "pos",
     "restaurant-operations",
     "menu-management",
+    "document-import",
     "reporting"
   ],
   "skills": "./skills/",
   "apps": "./.app.json",
   "interface": {
     "displayName": "X1 HQ",
-    "shortDescription": "Operate and analyze X1 HQ.",
-    "longDescription": "Manage menus, settings, devices, staff workflows, and reports through authenticated, tenant-scoped X1 HQ tools.",
+    "shortDescription": "Operate, analyze, and import X1 HQ menus.",
+    "longDescription": "Manage menus, document imports, settings, devices, staff workflows, and reports through authenticated, tenant-scoped X1 HQ tools.",
     "developerName": "X1",
     "category": "Business",
     "capabilities": [
       "Authenticated X1 HQ access",
       "Tenant-scoped operations",
+      "Resumable document-menu imports",
       "Read-only reporting"
     ],
     "websiteURL": "https://x1.tech",
     "defaultPrompt": [
       "Show the X1 HQ workspaces and brands I can access.",
+      "Import this menu document into the selected X1 HQ brand.",
       "Inspect a shop's menu and device settings.",
       "Analyze recent sales for the selected brand."
     ]

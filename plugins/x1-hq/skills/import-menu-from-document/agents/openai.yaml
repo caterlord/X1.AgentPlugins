@@ -1,0 +1,4 @@
+interface:
+  display_name: "Import Menu from Document"
+  short_description: "Extract, review, and preview resumable X1 HQ menu imports"
+  default_prompt: "Extract this menu document into a resumable X1 HQ draft, ask only the questions needed for a safe preview, and do not commit without approval."

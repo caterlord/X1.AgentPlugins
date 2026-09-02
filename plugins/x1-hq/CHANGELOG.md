@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.3
+
+- Add the resumable `import-menu-from-document` skill and complete table-form
+  customer review before approval.
+- Import categories, sellable items, modifier options, modifier groups,
+  exceptional group price overrides, and item mappings in one dependency-aware
+  operation.
+- Add `approve_and_commit_menu_import`, which queues the customer-approved
+  import while issuing and consuming its approval token entirely inside the
+  gateway.
+- Keep approval tokens out of assistant inputs, outputs, task payloads, and
+  audit metadata.
+
 ## 0.1.3
 
 - Make the GitHub marketplace package workspace-native by referencing the
