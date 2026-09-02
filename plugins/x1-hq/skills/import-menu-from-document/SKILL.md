@@ -3,7 +3,7 @@ name: import-menu-from-document
 description: Extract, structure, validate, resume, and preview X1 HQ menu imports from PDF, image, spreadsheet, CSV, pasted text, or another customer document. Use when a customer supplies menu source material, asks an agent to enter a menu, needs multi-turn clarification, or wants to resume a document-derived menu draft. Stop before commit unless the customer separately approves the final business-change preview.
 metadata:
   author: X1
-  version: "0.2.5"
+  version: "0.2.6"
 ---
 
 # Import Menu From Document
@@ -77,6 +77,10 @@ when interpreting a PDF, image, spreadsheet, or bilingual/multi-column menu.
 - Do not infer delivery, online, or kiosk availability from dine-in/takeaway
   wording. Default unmentioned channels to disabled; do not ask merely because
   the source is silent.
+- Set modifier-group channel availability on the group header: POS uses
+  `isPosDisplay` and Online Ordering uses `isOdoDisplay`. Every item mapped to
+  that group inherits the same channel availability. Never model or describe
+  channel availability as an item-to-group mapping override.
 
 ## Persist before asking questions
 
@@ -191,11 +195,10 @@ shown proposal.
 Stop after the preview for a pre-import request. If the customer later gives an
 explicit, unambiguous approval for that exact final preview, call
 `approve_and_commit_menu_import` with its `previewId`, a stable idempotency key,
-and the required explicit-approval attestation. This atomic tool queues the
-commit when authenticated async execution is available, or completes the same
-trackable task inside the current verified request otherwise. It issues and
-consumes the approval entirely inside the gateway. Never ask the customer for
-an approval token or invent one. If the connected action snapshot does not
+and the required explicit-approval attestation. This atomic tool returns a
+trackable task immediately and performs the approved import asynchronously. It
+issues and consumes the approval entirely inside the gateway. Never ask the
+customer for an approval token or invent one. If the connected action snapshot does not
 expose `approve_and_commit_menu_import`, use the supported legacy handoff by
 calling `commit_import_menu_catalog` with `previewId`, the same stable
 idempotency key, `executionMode=async`, and `approvalToken` set exactly to
@@ -205,6 +208,16 @@ server-issued one. Use this fallback only under the same exact-preview and
 explicit-user-approval conditions. Do not suggest reconnecting merely because
 the atomic action is missing. Monitor the returned task with `get_task_status`
 and report the final per-record result and readback status.
+
+Treat the task ID as the handle for the import after submission. While its
+status is `queued` or `running`, poll `get_task_status`; never submit another
+commit or call the task retry endpoint. If a transport timeout occurs after a
+task ID was returned, retry only `get_task_status`. If the initial commit call
+times out before a task ID is received, repeat that exact call once with the
+same preview ID and the same idempotency key: the gateway returns the existing
+task instead of starting another import. Generate a new idempotency key only
+for a newly approved preview. Use task retry only after a terminal `failed`
+status says `canRetry=true`.
 
 The approval applies only to the exact preview shown. If the preview changed,
 expired, belongs to an earlier authenticated connection, or the customer asks

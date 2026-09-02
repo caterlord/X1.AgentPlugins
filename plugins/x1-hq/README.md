@@ -45,7 +45,7 @@ execution attempts.
 
 ## Release policy
 
-The package is versioned independently from the MCP gateway. Installing this
+Version 0.3.6 is versioned independently from the MCP gateway. Installing this
 plugin does not expand an HQ user's permissions or bypass X1's runtime controls.
 
 The marketplace-imported directory intentionally does not contain `mcp.json`.
