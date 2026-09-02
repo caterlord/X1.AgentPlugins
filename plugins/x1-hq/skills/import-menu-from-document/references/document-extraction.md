@@ -108,10 +108,13 @@ target jurisdiction and existing HQ taxation context:
 - printed dine-in implies only in-store intent;
 - printed takeaway implies only takeaway intent;
 - absence of delivery, online, or kiosk wording does not enable those channels;
-- when every resolved target shop is definitively in Hong Kong and
-  `get_menu_authoring_context` reports no active taxation, use
+- when every resolved target shop is definitively in Hong Kong, use
   `taxIntent=non_taxable`; Hong Kong has no sales tax, VAT, or GST, so do not
-  ask whether menu prices include or exclude sales tax;
+  ask whether menu prices include or exclude sales tax unless HQ returns an
+  explicit, active taxation setting that conflicts with that treatment;
+- an unavailable or failed optional HQ taxation lookup is not evidence of an
+  active tax. For a confirmed Hong Kong target it must not turn tax intent into
+  `needs_review` or trigger a customer question;
 - do not infer Hong Kong solely from Chinese text, a brand name, or HKD. Use the
   resolved shop/company market or address, with locale and currency only as
   corroboration;

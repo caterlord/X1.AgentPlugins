@@ -1,5 +1,15 @@
 # Changelog
 
+## 0.3.5
+
+- Treat confirmed Hong Kong menu imports as non-taxable even when the optional
+  HQ taxation lookup is unavailable, unless an authoritative active setting
+  explicitly conflicts.
+- Let older connector action snapshots hand off an explicitly approved final
+  menu preview through `commit_import_menu_catalog`; the gateway converts the
+  fixed attestation into the same server-issued, one-time approval used by the
+  atomic commit tool, without exposing the real token.
+
 ## 0.3.4
 
 - Generate collision-checked category and item codes during preview whenever a

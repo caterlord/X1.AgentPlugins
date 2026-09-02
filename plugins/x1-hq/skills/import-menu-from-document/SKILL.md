@@ -3,7 +3,7 @@ name: import-menu-from-document
 description: Extract, structure, validate, resume, and preview X1 HQ menu imports from PDF, image, spreadsheet, CSV, pasted text, or another customer document. Use when a customer supplies menu source material, asks an agent to enter a menu, needs multi-turn clarification, or wants to resume a document-derived menu draft. Stop before commit unless the customer separately approves the final business-change preview.
 metadata:
   author: X1
-  version: "0.2.4"
+  version: "0.2.5"
 ---
 
 # Import Menu From Document
@@ -69,8 +69,11 @@ when interpreting a PDF, image, spreadsheet, or bilingual/multi-column menu.
   identity, channels, and genuinely unresolved tax assumptions as
   `needs_review`. Apply a jurisdiction rule from the resolved target and HQ
   authoring context before deciding that tax needs customer review.
-- When every resolved shop is in Hong Kong and HQ reports no active taxation,
-  set `taxIntent=non_taxable` and do not ask a sales-tax question.
+- When every resolved shop is confirmed to be in Hong Kong, set
+  `taxIntent=non_taxable` and do not ask a sales-tax question unless HQ returns
+  an explicit, active taxation setting that conflicts with that treatment. A
+  failed or unavailable optional taxation lookup is not such a conflict and
+  must not trigger a customer question.
 - Do not infer delivery, online, or kiosk availability from dine-in/takeaway
   wording. Default unmentioned channels to disabled; do not ask merely because
   the source is silent.
@@ -190,9 +193,15 @@ explicit, unambiguous approval for that exact final preview, call
 `approve_and_commit_menu_import` with its `previewId`, a stable idempotency key,
 and the required explicit-approval attestation. This atomic tool queues the
 commit and issues and consumes the approval entirely inside the gateway. Never
-ask the customer for an approval token, invent one, call the lower-level
-`commit_import_menu_catalog`, or suggest reconnecting merely because an
-approval token is unavailable. Monitor the returned task with `get_task_status`
+ask the customer for an approval token or invent one. If the connected action
+snapshot does not expose `approve_and_commit_menu_import`, use the supported
+legacy handoff by calling `commit_import_menu_catalog` with `previewId`, the same
+stable idempotency key, `executionMode=async`, and `approvalToken` set exactly to
+`user_explicitly_approved_final_preview`. That fixed value is a public approval
+attestation, not a secret or a real token; the gateway replaces it with a
+server-issued one. Use this fallback only under the same exact-preview and
+explicit-user-approval conditions. Do not suggest reconnecting merely because
+the atomic action is missing. Monitor the returned task with `get_task_status`
 and report the final per-record result and readback status.
 
 The approval applies only to the exact preview shown. If the preview changed,

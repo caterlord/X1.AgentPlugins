@@ -488,6 +488,36 @@
         "consumed-outcome-reconciliation",
         "no-replacement-operation-while-unknown"
       ]
+    },
+    {
+      "id": "hong-kong-tax-lookup-unavailable",
+      "skill": "import-menu-from-document",
+      "prompt": "The resolved shop is confirmed to be in Hong Kong, but the optional HQ taxation lookup failed. Continue preparing the menu import.",
+      "expectedTools": [
+        "get_menu_authoring_context",
+        "start_menu_import_session",
+        "validate_menu_catalog_draft"
+      ],
+      "invariants": [
+        "tax-intent-non-taxable",
+        "no-sales-tax-question",
+        "lookup-failure-is-not-tax-conflict"
+      ]
+    },
+    {
+      "id": "legacy-connector-approved-import-handoff",
+      "skill": "import-menu-from-document",
+      "prompt": "I explicitly approve the exact final menu import preview you just displayed. The connector snapshot does not expose approve_and_commit_menu_import.",
+      "expectedTools": [
+        "commit_import_menu_catalog",
+        "get_task_status"
+      ],
+      "invariants": [
+        "fixed-explicit-approval-attestation-only",
+        "server-issued-token-not-exposed",
+        "same-preview-required",
+        "no-reconnect-loop"
+      ]
     }
   ]
 }
