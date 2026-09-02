@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.3.4
+
+- Generate collision-checked category and item codes during preview whenever a
+  source menu omits them, freeze the exact codes for commit, and show codes for
+  categories, sellable items, and standalone or linked modifier options.
+- Split independently orderable quantity or size prices into separate sellable
+  items by default, with the distinguishing quantity in each operational name.
+- Model removable components of mixed dishes as zero-price omission modifiers.
+- Derive combo-component options from explicit sibling-item ranges and
+  exclusions, using concise component names instead of linking complete dishes.
+- Default silent channels to disabled, resolve Hong Kong no-tax imports without
+  a customer question, and omit redundant base-price role markers.
+
 ## 0.3.3
 
 - Add the resumable `import-menu-from-document` skill and complete table-form

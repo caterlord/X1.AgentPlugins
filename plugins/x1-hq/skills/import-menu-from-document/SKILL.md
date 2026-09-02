@@ -3,7 +3,7 @@ name: import-menu-from-document
 description: Extract, structure, validate, resume, and preview X1 HQ menu imports from PDF, image, spreadsheet, CSV, pasted text, or another customer document. Use when a customer supplies menu source material, asks an agent to enter a menu, needs multi-turn clarification, or wants to resume a document-derived menu draft. Stop before commit unless the customer separately approves the final business-change preview.
 metadata:
   author: X1
-  version: "0.2.3"
+  version: "0.2.4"
 ---
 
 # Import Menu From Document
@@ -35,19 +35,45 @@ when interpreting a PDF, image, spreadsheet, or bilingual/multi-column menu.
   currency, channel intent, and tax intent in `source`.
 - Give every category, item, price, modifier group, modifier option, combo
   candidate, and availability rule a stable draft-local `recordId`.
+- Preserve a category or item code only when the source explicitly supplies it.
+  Do not invent a code during extraction. For every new category or HQ item
+  whose source code is absent, `preview_import_menu_catalog` assigns and freezes
+  a unique code after checking the existing brand and the complete draft. It
+  creates a readable uppercase category code first, then an item code in the
+  form `{CATEGORY_CODE}-{5 uppercase alphanumeric characters}`. Standalone
+  modifier options receive an item code from the HQ modifier category by the
+  same rule; linked options reuse the linked sellable item's code.
 - Preserve page/row/region/text evidence and extraction confidence. Do not keep
   raw file bytes or image crops in the draft.
-- Use `localizedNames`, `salesUnit`, `portionQuantity`, and `variantOptions`
-  instead of hiding bilingual names, per-piece quantities, or size prices in a
-  free-text description.
+- Use `localizedNames`, `salesUnit`, and `portionQuantity` instead of hiding
+  bilingual names or operational quantities in a free-text description. When
+  one source item has independently orderable quantities or sizes with their
+  own prices, create one sellable item per choice by default and include the
+  distinguishing quantity or size in each localized item name. Use
+  `variantOptions` only when the target authoring context explicitly supports a
+  single orderable parent with variants and that model matches the customer's
+  intent.
+- For a mixed or assorted dish whose included components are explicitly listed,
+  create an item-specific zero-price omission group by default unless the source
+  or target context says the recipe is fixed. Use standalone action labels such
+  as `走鵝腎`; do not link omission choices to sellable ingredient items.
+- Before treating a combo as incomplete, derive its eligible choices from any
+  explicit item-code range, nearby sibling dishes, and stated exclusions. Turn
+  each eligible dish into a short component label by removing serving-container
+  words such as `飯` or `麵` and redundant brand words while preserving meaning.
+  Use standalone modifier options when the customer is choosing components;
+  use `linkedItemRef` only when the choice is the complete sellable item.
 - Use `categoryRefs`; do not add HQ-only `categoryId` or `departmentId` fields to
   a canonical draft.
 - Mark unresolved combos, incomplete choice lists, uncertain prices, source
   identity, channels, and genuinely unresolved tax assumptions as
   `needs_review`. Apply a jurisdiction rule from the resolved target and HQ
   authoring context before deciding that tax needs customer review.
+- When every resolved shop is in Hong Kong and HQ reports no active taxation,
+  set `taxIntent=non_taxable` and do not ask a sales-tax question.
 - Do not infer delivery, online, or kiosk availability from dine-in/takeaway
-  wording. Unmentioned channels remain `needs_review` or disabled.
+  wording. Default unmentioned channels to disabled; do not ask merely because
+  the source is silent.
 
 ## Persist before asking questions
 
@@ -76,6 +102,9 @@ duplicate questions from individual findings.
 - Ask only questions that block or materially change the preview. Do not ask the
   customer to reconfirm already resolved IDs or exact source text.
 - If a record is excluded, preserve the reason and evidence.
+- Do not ask the customer to enumerate combo choices that can be reconstructed
+  deterministically from the source. Ask only when the candidate boundary or a
+  component label remains genuinely ambiguous.
 
 Prioritize questions in this order:
 
@@ -105,11 +134,18 @@ their HQ IDs. Never rename source categories to, or collapse them into,
 initialization placeholders such as `Food`, `Drinks`, or `Modifiers` merely to
 obtain an existing HQ category ID.
 
+Missing source codes are not a customer clarification. Let the gateway create
+them during preview, then show those exact generated category and item codes to
+the customer. A generated code belongs to that preview lineage: never replace
+it between approval and commit, and create a fresh preview if any proposed code
+must change. Source-supplied codes remain authoritative unless validation finds
+a conflict.
+
 Standalone modifier options are stored as modifier items in HQ's enabled
 modifier-category container. This technical use of the modifier container does
 not permit mapping a source menu category to it. Linked options reuse the
 referenced sellable item. The ordinary option price belongs to the shared
-modifier item and uses `priceRole: base` (or omits `priceRole`). Do not use the
+modifier item; omit `priceRole` for ordinary base pricing. Do not use the
 modifier-group price-difference function for ordinary option prices. Use
 `priceRole: group_override` only when the same modifier item is shared by more
 than one group and this particular group intentionally charges a different
@@ -138,8 +174,8 @@ The review must include:
 - every menu item with category, code, bilingual name, price/variant, unit,
   modifier groups, and create/update/no-op/exclude action;
 - every modifier group with selection limits and mapped items;
-- every modifier option with ordinary base-price versus exceptional
-  group-override treatment;
+- every modifier option with its reused or generated item code and ordinary
+  base-price versus exceptional group-override treatment;
 - every excluded, unsupported, conflicted, or unresolved record and reason.
 
 Use tables whenever there is more than one record. For a large menu, split the

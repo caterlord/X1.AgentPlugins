@@ -4,7 +4,7 @@
     {
       "id": "bilingual-pdf-menu-resumable-pre-import",
       "skill": "import-menu-from-document",
-      "prompt": "Import this bilingual PDF menu into the confirmed Hong Kong brand 生財滷味. The PDF says 生記滷鵝, lists dine-in and takeaway only, and A15 has an incomplete two-choice rule. Stop after a safe preview.",
+      "prompt": "Import this bilingual PDF menu into the confirmed Hong Kong brand 生財滷味. The PDF says 生記滷鵝, lists dine-in and takeaway only, prices goose feet separately for one and five pieces, lists removable ingredients for an assorted rice dish, and says A15 chooses two components from A1 and A4-A14. Stop after a safe preview.",
       "expectedTools": [
         "get_mcp_gateway_status",
         "list_hq_workspace_options",
@@ -24,6 +24,14 @@
         "source-target-mismatch-confirmed",
         "unmentioned-channels-not-enabled",
         "hong-kong-non-taxable-without-sales-tax-question",
+        "independently-orderable-price-variants-split",
+        "operational-quantity-in-item-name",
+        "composite-dish-omission-modifiers",
+        "combo-components-derived-from-sibling-items",
+        "component-options-not-linked-whole-dishes",
+        "missing-category-codes-generated-before-preview",
+        "missing-item-codes-use-category-prefix-and-five-character-suffix",
+        "generated-codes-visible-and-frozen-for-commit",
         "resumable-draft-session",
         "review-questions-deduplicated",
         "preview-before-commit",
