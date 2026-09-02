@@ -192,11 +192,13 @@ Stop after the preview for a pre-import request. If the customer later gives an
 explicit, unambiguous approval for that exact final preview, call
 `approve_and_commit_menu_import` with its `previewId`, a stable idempotency key,
 and the required explicit-approval attestation. This atomic tool queues the
-commit and issues and consumes the approval entirely inside the gateway. Never
-ask the customer for an approval token or invent one. If the connected action
-snapshot does not expose `approve_and_commit_menu_import`, use the supported
-legacy handoff by calling `commit_import_menu_catalog` with `previewId`, the same
-stable idempotency key, `executionMode=async`, and `approvalToken` set exactly to
+commit when authenticated async execution is available, or completes the same
+trackable task inside the current verified request otherwise. It issues and
+consumes the approval entirely inside the gateway. Never ask the customer for
+an approval token or invent one. If the connected action snapshot does not
+expose `approve_and_commit_menu_import`, use the supported legacy handoff by
+calling `commit_import_menu_catalog` with `previewId`, the same stable
+idempotency key, `executionMode=async`, and `approvalToken` set exactly to
 `user_explicitly_approved_final_preview`. That fixed value is a public approval
 attestation, not a secret or a real token; the gateway replaces it with a
 server-issued one. Use this fallback only under the same exact-preview and

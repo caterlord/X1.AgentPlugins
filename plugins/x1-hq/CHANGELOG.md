@@ -9,6 +9,9 @@
   menu preview through `commit_import_menu_catalog`; the gateway converts the
   fixed attestation into the same server-issued, one-time approval used by the
   atomic commit tool, without exposing the real token.
+- Complete the atomic import as a tracked in-request task when authenticated
+  asynchronous execution is unavailable, preserving current-request credential
+  revalidation without changing the task-status contract.
 
 ## 0.3.4
 
