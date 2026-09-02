@@ -1,55 +1,43 @@
 # X1 HQ Agent Plugin
 
-This directory is the portable X1 HQ Copilot package. It follows Agent Plugins
-1.0.0 and combines three Agent Skills with the hosted X1 HQ MCP gateway:
+X1 HQ is a conversational operating and reporting plugin for X1 merchants. The
+workspace-native package combines an OpenAI plugin wrapper, three Agent Skills,
+and the registered X1 HQ Agent app backed by the hosted X1 HQ MCP gateway:
 
 - `operate-x1-hq` handles everyday operational work across menus, settings,
   devices, online ordering, and other capabilities exposed by the gateway.
 - `analyze-x1-hq-reports` handles read-only reporting and investigation.
 - `import-menu-from-document` handles resumable PDF, image, spreadsheet, CSV,
-  and pasted-menu extraction through a non-mutating import preview.
+  and pasted-menu extraction, complete table review, explicit approval, and
+  server-side approved commit handoff.
 
-The skills are the conversational operating guide. They do not contain
-credentials, call X1 HQ APIs directly, or grant permissions. The MCP gateway is
-the only business-operation path and continues to enforce authentication,
-tenant scope, delegated scopes, preview and approval requirements, quotas, and
-audit policy.
+The skills are conversational operating guides. They contain no credentials,
+do not call X1 HQ APIs directly, and grant no permission. The MCP gateway is the
+only business-operation path and enforces authentication, workspace scope,
+delegated scopes, previews and approvals, quotas, audit policy, and circuit
+breakers.
 
-## Validate
+## Current pilot status
 
-From the `X1.HQ.Agent` repository root:
+The hosted gateway is in a controlled write-enabled staging pilot. Available
+reads, previews, and commits still depend on the signed-in HQ user's delegated
+scopes, workspace permissions, tenant scope, and the gateway's current rollout
+gates. X1 may narrow or disable capabilities without requiring users to
+reinstall this plugin.
 
-```sh
-pnpm generate:agent-plugin
-pnpm validate:agent-plugin
-pnpm test:agent-plugin-conformance
-pnpm package:agent-plugin
-```
+## Compatibility
 
-`generate:agent-plugin` refreshes the capability references from the canonical
-tool contracts. `validate:agent-plugin` checks the vendored Agent Plugins JSON
-schemas, Agent Skills structure, semantic URL and containment rules, references,
-secret safety, and generated-contract drift.
+- OpenAI ChatGPT workspaces and Codex through the included `.codex-plugin`
+  wrapper and `.app.json` reference.
+- Agent Plugins 1.0.0 clients through the portable release artifact generated
+  from `portable/x1-hq` and these shared skills.
+- An X1 HQ user account with access to at least one workspace.
 
-`test:agent-plugin-conformance` validates isolated package copies, including
-standards-compliant YAML, fixed component discovery, legal contained paths, and
-both accepted and rejected MCP configurations. It also proves that malformed
-manifests, unsafe paths or credentials, stale generated catalogs, and invalid
-workflow/tool routing fail the release gate.
-
-`package:agent-plugin` produces `.artifacts/agent-plugin/x1-hq/` from the
-validated source package and writes a SHA-256 inventory beside it. This `0.1.x`
-line is intended for controlled pilot distribution while hosted OAuth and live
-client certification are completed.
-
-Repository CI also runs `pnpm test:vendor-discovery`, which proves that clients
-must use the exact `/mcp` protected-resource document and discover the Clerk
-authorization server from its `authorization_servers` value. A legacy generic
-resource document is deliberately rejected.
+See the repository-level README for installation instructions.
 
 ## Capability availability
 
-The generated capability references describe the release contract, but the
+The capability references describe the package contract, but the
 gateway remains authoritative. Operators can switch the gateway to read-only or
 disabled mode, or disable individual tools or capability tags. Clients then see
 only the allowed tools, and the gateway independently rejects stale or direct
@@ -57,7 +45,10 @@ execution attempts.
 
 ## Release policy
 
-The portable package is versioned independently from the MCP gateway. A release
-must validate the packaged directory and then pass the repository's MCP,
-authorization, tenant-isolation, approval, idempotency, and client-specific
-conformance gates. Vendor adapters remain outside this portable core.
+Version 0.3.6 is versioned independently from the MCP gateway. Installing this
+plugin does not expand an HQ user's permissions or bypass X1's runtime controls.
+
+The marketplace-imported directory intentionally does not contain `mcp.json`.
+OpenAI workspace import treats plugins that declare MCP servers there as
+desktop-only. The portable Agent Plugins distribution is generated separately
+with `node scripts/package-portable-agent-plugin.mjs`.
