@@ -1,8 +1,8 @@
 {
   "apps": {
     "x1-hq": {
-      "id": "plugin_asdk_app_6a96e430d094819196585da95216a5c3",
-      "category": "Business"
+      "id": "asdk_app_6a96e430d094819196585da95216a5c3",
+      "required": true
     }
   }
 }

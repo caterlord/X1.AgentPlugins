@@ -1,10 +1,8 @@
-2d687a9d9e57c355488e504dde4b5636171db1b2375e7bd74312e85e69084a08  plugins/x1-hq/.app.json
-1ec2ed3b06f3911b361b9b2aa14db980f301661a4e66b5163afde7f9d468e37d  plugins/x1-hq/.codex-plugin/plugin.json
-359283d1278bc1c076907c22113b1dea1a25ba0dbd2620ce2379728b57135310  plugins/x1-hq/CHANGELOG.md
-ade1bb23b2f11f14db1452aa56e635c3f2b5c0d3a02e1aa04ba7fd446db04c95  plugins/x1-hq/README.md
+7ffd8a0c2a6c07ded85db555a0c67c43b788815dc979631fa4891c0bf463bc93  plugins/x1-hq/.app.json
+2021143d78431ae82c3040e4dff068adb300499d237b2f5aa0d359c22056c1f0  plugins/x1-hq/.codex-plugin/plugin.json
+bbcced98232dadd3c683d30b34a768985939132345d4e0aaa74f34e82f1007eb  plugins/x1-hq/CHANGELOG.md
+830f059a45f78e947650318ceb0b3f77fc8ac16a645bbe77059be98d87bcbb8d  plugins/x1-hq/README.md
 1d65151cfb628dc54eea51f1133bec3aaacfa1c9fbf3abb3431a0ccebba59d97  plugins/x1-hq/evals/workflow-cases.json
-52a8e4294ec7a7b9882f4364f10401a3a31cf017215e45e201a0a49c4b088202  plugins/x1-hq/mcp.json
-9b1b7d96fb1df813e0d50df03c8e2e9551cee9dcfe40f016a99b85837d649432  plugins/x1-hq/plugin.json
 02b19604f9b7b6b3f2949b4fd2af3ec6436403357be3b5a0c17979da587a0af8  plugins/x1-hq/schemas/README.md
 4c357db0e4359280ce055b98bf167fca548bed3a8992391d4ecff64276e3e6c7  plugins/x1-hq/schemas/mcp.schema.json
 cc65b53b668db7038f8ce1473c00f41740303ea0a0ec3e2c694e63cb51bfe0a2  plugins/x1-hq/schemas/plugin.schema.json
@@ -23,3 +21,6 @@ f4f7c1bb2e0ec610d82713e0251333d0298caf8aae2a0eb970fb0e150880e83d  plugins/x1-hq/
 229e4fe0a6bf06acf4ff14cc5775a09d36ffa3786b8691e7d538a955b22cad94  plugins/x1-hq/skills/operate-x1-hq/references/response-patterns.md
 fb2eba777bafa9eb50867559564d172141b5045f38310ea554398242661eb7ca  plugins/x1-hq/skills/operate-x1-hq/references/settings-devices-and-access.md
 8ebdde28c1ffbf964e9e2c7a78352f752b06347daac75de04c3c9bc8072a4689  plugins/x1-hq/skills/operate-x1-hq/references/workspace-and-scope.md
+52a8e4294ec7a7b9882f4364f10401a3a31cf017215e45e201a0a49c4b088202  portable/x1-hq/mcp.json
+647bb56ea6a075994a62e3eec1b94ce7c0a8643d822658590d341060bbde9e99  portable/x1-hq/plugin.json
+eea5012f72d1b7c7e66f15fcc84208bfcb7d71b8e887a692c46cc6526c84c3bc  scripts/package-portable-agent-plugin.mjs

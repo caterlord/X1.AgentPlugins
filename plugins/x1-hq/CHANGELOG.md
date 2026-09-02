@@ -1,5 +1,16 @@
 # Changelog
 
+## 0.1.3
+
+- Make the GitHub marketplace package workspace-native by referencing the
+  registered `X1 HQ Agent` app with its `asdk_app_...` identifier.
+- Mark the registered app as required so workspace admins receive an explicit
+  dependency during import and access configuration.
+- Keep portable Agent Plugins manifests outside the workspace-imported plugin
+  directory so the imported plugin is not classified as desktop-only.
+- Add a deterministic portable-package build that combines the shared skills
+  with the Agent Plugins 1.0.0 manifests for release assets.
+
 ## 0.1.2
 
 - Reuse workspace, company, brand, and shop mappings already verified during

@@ -1,8 +1,8 @@
 # X1 HQ Agent Plugin
 
-X1 HQ is a conversational operating and reporting plugin for X1 merchants. It
-combines an OpenAI plugin wrapper, an Agent Plugins 1.0.0 portable package, two
-Agent Skills, and the hosted X1 HQ MCP gateway:
+X1 HQ is a conversational operating and reporting plugin for X1 merchants. The
+workspace-native package combines an OpenAI plugin wrapper, two Agent Skills,
+and the registered X1 HQ Agent app backed by the hosted X1 HQ MCP gateway:
 
 - `operate-x1-hq` handles everyday operational work across menus, settings,
   devices, online ordering, and other capabilities exposed by the gateway.
@@ -24,8 +24,10 @@ capabilities without requiring users to reinstall this plugin.
 
 ## Compatibility
 
-- OpenAI Codex and ChatGPT desktop through the included `.codex-plugin` wrapper.
-- Agent Plugins 1.0.0 clients through the portable `plugin.json` and `mcp.json`.
+- OpenAI ChatGPT workspaces and Codex through the included `.codex-plugin`
+  wrapper and `.app.json` reference.
+- Agent Plugins 1.0.0 clients through the portable release artifact generated
+  from `portable/x1-hq` and these shared skills.
 - An X1 HQ user account with access to at least one workspace.
 
 See the repository-level README for installation instructions.
@@ -42,3 +44,8 @@ execution attempts.
 
 The package is versioned independently from the MCP gateway. Installing this
 plugin does not expand an HQ user's permissions or bypass X1's runtime controls.
+
+The marketplace-imported directory intentionally does not contain `mcp.json`.
+OpenAI workspace import treats plugins that declare MCP servers there as
+desktop-only. The portable Agent Plugins distribution is generated separately
+with `node scripts/package-portable-agent-plugin.mjs`.
