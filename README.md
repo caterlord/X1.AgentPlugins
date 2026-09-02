@@ -10,10 +10,11 @@ Add this GitHub repository as a marketplace:
 codex plugin marketplace add caterlord/X1.AgentPlugins
 ```
 
-Restart Codex, open the Plugins directory, choose **X1 Plugins**, and install
-**X1 HQ**. When prompted, connect your X1 HQ account. The plugin automatically
-uses a uniquely resolved workspace hierarchy and asks only when more than one
-matching scope remains.
+Open the Plugins directory, choose **X1 Plugins**, and install **X1 HQ**. When
+prompted, connect your X1 HQ account. Start a new Codex task after installation
+so the task loads the installed plugin version and its current tools. The
+plugin automatically uses a uniquely resolved workspace hierarchy and asks
+only when more than one matching scope remains.
 
 For a reproducible installation, pin the marketplace to a published release
 tag:
@@ -41,21 +42,37 @@ capability references, and evaluation cases. Portable Agent Plugins 1.0.0
 clients should use the `x1-hq-agent-plugin` artifact attached to each GitHub
 release; its manifests are maintained under [`portable/x1-hq`](portable/x1-hq).
 
-## Import into a ChatGPT workspace
+## Keep the plugin up to date
 
-Workspace admins can import this repository as an in-house marketplace:
+This repository is an X1-operated public Git marketplace; it is not an OpenAI
+marketplace listing. Codex does not expose a per-plugin **Refresh** button. To
+pick up a release from the tracked Git branch, refresh the marketplace snapshot
+and reinstall the plugin from that snapshot:
 
-1. Open **Admin > Plugins** and select **Add > Import marketplace**.
-2. Use `https://github.com/caterlord/X1.AgentPlugins` as **Source**.
-3. Leave **Path** empty because the marketplace manifest is at the repository
-   root.
-4. Select an immutable release tag for a controlled rollout, or `main` for
-   automatic updates after reviewed merges.
-5. Enable the required **X1 HQ Agent** app for the same roles that can install
-   the **X1 HQ** plugin.
+```sh
+codex plugin marketplace upgrade x1-plugins
+codex plugin add x1-hq@x1-plugins
+```
 
-Importing the marketplace does not grant X1 access. Each member still signs in
-to X1 HQ, and the gateway continues to enforce tenant scope and runtime policy.
+Then start a new Codex task. Existing tasks keep the plugin skills and tool
+schemas they loaded when the task began.
+
+A marketplace added with `--ref` remains pinned to that Git ref. Moving a
+pinned installation to another release is an explicit administrator or user
+action; changing files on `main` does not move the pin.
+
+The Git marketplace distributes the plugin manifest, skills, and app reference.
+The referenced **X1 HQ Agent** app and gateway own the live MCP tool metadata.
+Before publishing a release that changes tool names, schemas, annotations, or
+OAuth scopes, X1 must deploy the gateway, refresh the app metadata, and validate
+the connected OAuth client first. End users do not perform this developer
+refresh.
+
+Users normally do not need to reconnect their X1 HQ account for skill-only
+updates. If a release requests additional OAuth scopes, X1 must first add those
+scopes to the existing OAuth client allowlist. The user can then reconnect to
+review and grant the new permissions. Publishing the Git plugin by itself does
+not update an OAuth client's allowed scopes.
 
 ## Security and privacy
 
