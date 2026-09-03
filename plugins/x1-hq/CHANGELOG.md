@@ -1,5 +1,76 @@
 # Changelog
 
+## 0.4.2
+
+- Add `approve_and_commit_menu_item` so an explicitly approved item create,
+  update, or delete preview can be committed without exposing an approval
+  token to the assistant.
+- Keep the exact preview, requester, workspace, idempotency, downstream request
+  binding, and audit checks on the new approval handoff.
+
+## 0.4.1
+
+- Replace the menu-specific bounded-catalog facade with `find_hq_tools` and
+  separate read, preview, and commit dispatchers for every enabled HQ
+  capability.
+- Return exact live target schemas from discovery and revalidate delegated
+  arguments before execution.
+- Preserve each target tool's original scope, workspace, tenant, quota,
+  approval, idempotency, task, readback, and audit behavior; prevent mode
+  crossing and recursive dispatch.
+- Expose `retry_task` for terminal failed tasks with `canRetry=true`, while
+  rechecking the original write scope, requester, tenant, and idempotency
+  lineage before enqueueing the next attempt.
+- Apply the configured downstream HQ timeout to every router, raise the default
+  from 10 to 30 seconds, and report an explicit timeout diagnostic instead of
+  the opaque `This operation was aborted` message.
+
+## 0.4.0
+
+- Add `build_menu_import`, a stable pre-commit workflow facade that delegates
+  schema discovery, authoring context, resumable sessions, validation, preview,
+  and task monitoring to the existing governed tools.
+- Keep menu import callable in clients that defer or expose only a bounded
+  subset of a large MCP tool catalog, without weakening the separate explicit
+  approval and commit boundary.
+- Validate every facade payload against the delegated tool's current schema and
+  retain the delegated tool name in responses and audit events.
+
+## 0.3.9
+
+- Add `bootstrap_hq_workspace` as the single mandatory connection bootstrap:
+  it resolves customer-supplied company, brand, and shop names, persists a
+  unique path automatically, and returns concise candidates only when the user
+  must disambiguate.
+- Keep the bootstrap callable in bounded client tool catalogs and retain the
+  legacy workspace list-and-commit tools for compatibility.
+- Prevent agents from sending customers to a host UI when conversational
+  workspace selection is required.
+
+## 0.3.8
+
+- Map bilingual customer-facing item names to HQ `ItemNameAlt2` instead of the
+  kitchen-name field, and preserve one-based source display ordering.
+- Require natural English casing, semantic department selection, and a varied
+  category-led button-style palette in document menu imports.
+- Commit complete per-shop ItemShopDetail settings—including sale enablement,
+  price, surcharge, stock defaults, and printer settings—through the same HQ
+  persistence path used by item authoring.
+
+## 0.3.7
+
+- Add a required post-extraction spelling, translation, and OCR review that
+  distinguishes clear transcription corrections from probable source typos
+  that need customer confirmation.
+- Preserve the HQ company market code through workspace discovery and selection
+  so Hong Kong imports default to non-taxable even when the shop address or
+  optional taxation lookup is unavailable.
+- Clarify preview and import-session expiry recovery, and treat commit response
+  decoding failures as indeterminate until authoritative readback reconciles
+  the outcome.
+- Make the legacy menu-import commit return one connector-safe tracked-task
+  schema instead of a complex synchronous/asynchronous output union.
+
 ## 0.3.6
 
 - Define modifier-group POS and Online Ordering availability once on the group

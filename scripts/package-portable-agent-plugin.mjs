@@ -48,8 +48,8 @@ if (workspaceManifest.version !== portableManifest.version) {
 if (workspaceManifest.apps !== "./.app.json") {
   throw new Error("Workspace plugin must reference ./.app.json.");
 }
-if (!appReference?.id?.startsWith("asdk_app_") || appReference.required !== true) {
-  throw new Error("Workspace app reference must use a required asdk_app_ identifier.");
+if (!appReference?.id?.startsWith("asdk_app_")) {
+  throw new Error("Workspace app reference must use an asdk_app_ identifier.");
 }
 for (const desktopOnlyManifest of ["mcp.json", ".mcp.json", "plugin.json"]) {
   if (await exists(path.join(workspacePluginRoot, desktopOnlyManifest))) {

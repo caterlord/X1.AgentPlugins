@@ -15,6 +15,35 @@ For each record, preserve the smallest source span that supports it:
 Do not interpret decorations, page numbers, telephone numbers, minimum-spend
 notices, or delivery fees as menu prices.
 
+## Spelling, translation, and OCR review
+
+Before validation or preview, perform a separate language-quality pass over
+every category, item, modifier-group, and modifier-option name. Check both the
+operational name and every localized name; OCR confidence is evidence quality,
+not proof that a word is spelled correctly.
+
+Use the rendered source, repeated occurrences elsewhere in the document,
+bilingual meaning, nearby culinary terminology, and close existing HQ names to
+classify each suspicious value:
+
+- **OCR or transcription error with clear visual evidence:** propose the
+  visually printed value, preserve the exact extracted text in
+  `sourceEvidence`, record the reason in `assistantNote`, and include it in the
+  customer correction list before applying it to the accepted draft.
+- **Probable typo printed in the source:** preserve the printed value until the
+  customer decides. Mark the affected record `needs_review` and ask one concise
+  question showing the source value and recommended correction.
+- **Ambiguous spelling or translation:** do not guess. Show the competing
+  interpretations, affected records, and a recommended choice when the
+  evidence supports one.
+
+Mark every material correction candidate `needs_review` and list the candidates
+together before preview. Apply accepted corrections through the persisted
+session, then validate again. Pay particular attention to short English food
+names, proper nouns, similar Chinese characters, and cross-language mismatches
+that could change what a customer orders. Do not ask about harmless
+capitalization or styling unless it affects the operational name.
+
 ## Category and item codes
 
 Treat printed category and item codes as source data and preserve them exactly
@@ -37,6 +66,22 @@ regenerate them after customer approval.
 Keep one operational `name` and preserve each printed language in
 `localizedNames`. Do not concatenate two languages into one field when they can
 be represented separately. Keep transliterations distinct from translations.
+The secondary customer-facing language maps to HQ `Item Name (Alt)`
+(`ItemNameAlt2`), never to `Item Kitchen Name` (`ItemNameAlt`). Normalize
+ordinary English food names to natural casing, preserving only genuine acronyms
+and intentional brand capitalization.
+
+## Layout and authoring presentation
+
+Read top-to-bottom and left-to-right order within the source's actual visual
+groups. Store one-based category order, item order within each category, and
+modifier-option order. Do not flatten all display indexes to zero.
+
+Use the full enabled department and button-style lists from the authoring
+context. Map departments by operational responsibility (for example kitchen
+versus water bar) and surface a concise question only when the source and names
+cannot resolve a real ambiguity. Use category-level style variation and let
+items inherit their category style unless a meaningful visual override exists.
 
 ## Units, quantities, and variants
 
@@ -116,7 +161,8 @@ target jurisdiction and existing HQ taxation context:
   active tax. For a confirmed Hong Kong target it must not turn tax intent into
   `needs_review` or trigger a customer question;
 - do not infer Hong Kong solely from Chinese text, a brand name, or HKD. Use the
-  resolved shop/company market or address, with locale and currency only as
+  selected company's authoritative `marketCode` (for example `HK`) or the
+  resolved shop/company address, with locale and currency only as
   corroboration;
 - if target shops span jurisdictions, the jurisdiction is unknown, or HQ has an
   active taxation configuration, use `taxIntent=needs_review` unless the source

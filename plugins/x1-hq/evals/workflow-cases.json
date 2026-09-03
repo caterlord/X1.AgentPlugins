@@ -7,15 +7,11 @@
       "prompt": "Import this bilingual PDF menu into the confirmed Hong Kong brand 生財滷味. The PDF says 生記滷鵝, lists dine-in and takeaway only, prices goose feet separately for one and five pieces, lists removable ingredients for an assorted rice dish, and says A15 chooses two components from A1 and A4-A14. Stop after a safe preview.",
       "expectedTools": [
         "get_mcp_gateway_status",
-        "list_hq_workspace_options",
-        "commit_set_hq_workspace",
+        "bootstrap_hq_workspace",
         "resolve_hq_scope_reference",
-        "get_menu_catalog_draft_schema",
-        "get_menu_authoring_context",
-        "start_menu_import_session",
-        "validate_menu_catalog_draft",
-        "patch_menu_import_session",
-        "preview_import_menu_catalog"
+        "find_hq_tools",
+        "call_hq_read_tool",
+        "call_hq_preview_tool"
       ],
       "invariants": [
         "workspace-selection",
@@ -43,8 +39,7 @@
       "skill": "operate-x1-hq",
       "prompt": "Increase every hot drink at Central by HKD 1.",
       "expectedTools": [
-        "list_hq_workspace_options",
-        "commit_set_hq_workspace",
+        "bootstrap_hq_workspace",
         "resolve_hq_scope_reference",
         "preview_adjust_menu_prices",
         "commit_adjust_menu_prices"
@@ -64,7 +59,7 @@
       "skill": "operate-x1-hq",
       "prompt": "Disable lunch items at Central.",
       "expectedTools": [
-        "list_hq_workspace_options",
+        "bootstrap_hq_workspace",
         "resolve_hq_scope_reference"
       ],
       "invariants": [
@@ -494,9 +489,9 @@
       "skill": "import-menu-from-document",
       "prompt": "The resolved shop is confirmed to be in Hong Kong, but the optional HQ taxation lookup failed. Continue preparing the menu import.",
       "expectedTools": [
-        "get_menu_authoring_context",
-        "start_menu_import_session",
-        "validate_menu_catalog_draft"
+        "find_hq_tools",
+        "call_hq_read_tool",
+        "call_hq_preview_tool"
       ],
       "invariants": [
         "tax-intent-non-taxable",
@@ -505,18 +500,121 @@
       ]
     },
     {
+      "id": "workspace-market-hong-kong-tax-default",
+      "skill": "import-menu-from-document",
+      "prompt": "The selected HQ company has marketCode HK, the shop address is blank, and the taxation lookup is unavailable. Prepare this menu without asking me about sales tax.",
+      "expectedTools": [
+        "list_hq_workspace_options",
+        "find_hq_tools",
+        "call_hq_read_tool",
+        "call_hq_preview_tool"
+      ],
+      "invariants": [
+        "company-market-is-jurisdiction-evidence",
+        "tax-intent-non-taxable",
+        "no-sales-tax-question"
+      ]
+    },
+    {
+      "id": "ocr-and-source-spelling-review",
+      "skill": "import-menu-from-document",
+      "prompt": "OCR extracted 'Makerel Fishball' from the English line, while the image and Chinese name suggest mackerel. The printed source may itself contain the typo. Prepare the menu import.",
+      "expectedTools": [
+        "find_hq_tools",
+        "call_hq_read_tool",
+        "call_hq_preview_tool"
+      ],
+      "invariants": [
+        "separate-language-quality-pass",
+        "ocr-error-distinguished-from-source-typo",
+        "suggested-correction-shown-to-user",
+        "no-silent-source-rewrite"
+      ]
+    },
+    {
+      "id": "expired-menu-import-preview",
+      "skill": "import-menu-from-document",
+      "prompt": "I approve the menu preview, but its expiresAt time has already passed. Import it now.",
+      "expectedTools": [
+        "find_hq_tools",
+        "call_hq_read_tool",
+        "call_hq_preview_tool"
+      ],
+      "invariants": [
+        "expired-preview-not-committed",
+        "same-persisted-draft-repreviewed",
+        "complete-new-preview-displayed",
+        "new-explicit-approval-required"
+      ]
+    },
+    {
+      "id": "menu-import-commit-response-indeterminate",
+      "skill": "import-menu-from-document",
+      "prompt": "The approved menu import call returned an internal response-decoding error and no task id. It might already have run. Continue safely.",
+      "expectedTools": [
+        "find_hq_tools",
+        "call_hq_read_tool"
+      ],
+      "invariants": [
+        "indeterminate-not-declared-failed",
+        "authoritative-readback-first",
+        "same-idempotency-key-only",
+        "no-replacement-operation-while-unknown"
+      ]
+    },
+    {
       "id": "legacy-connector-approved-import-handoff",
       "skill": "import-menu-from-document",
       "prompt": "I explicitly approve the exact final menu import preview you just displayed. The connector snapshot does not expose approve_and_commit_menu_import.",
       "expectedTools": [
         "commit_import_menu_catalog",
-        "get_task_status"
+        "find_hq_tools",
+        "call_hq_commit_tool",
+        "call_hq_read_tool"
       ],
       "invariants": [
         "fixed-explicit-approval-attestation-only",
         "server-issued-token-not-exposed",
         "same-preview-required",
         "no-reconnect-loop"
+      ]
+    },
+    {
+      "id": "menu-import-bilingual-field-and-presentation-mapping",
+      "skill": "import-menu-from-document",
+      "prompt": "Prepare a bilingual menu whose Chinese names are primary and English names are secondary. The source English headings are all caps. HQ has Kitchen and Water Bar departments plus several button colours. Preserve the printed order and stop after preview.",
+      "expectedTools": [
+        "find_hq_tools",
+        "call_hq_read_tool",
+        "call_hq_preview_tool"
+      ],
+      "invariants": [
+        "secondary-language-maps-to-item-name-alt2",
+        "kitchen-name-not-used-for-translation",
+        "natural-english-casing",
+        "semantic-department-selection",
+        "varied-button-style-palette",
+        "one-based-source-display-order",
+        "presentation-visible-before-approval"
+      ]
+    },
+    {
+      "id": "menu-import-complete-item-shop-detail",
+      "skill": "import-menu-from-document",
+      "prompt": "Import the approved menu into the selected shop. Each item has a price, should be enabled for sale, has no takeaway surcharge, and has no printer override unless the source says otherwise.",
+      "expectedTools": [
+        "approve_and_commit_menu_import",
+        "find_hq_tools",
+        "call_hq_commit_tool",
+        "call_hq_read_tool"
+      ],
+      "invariants": [
+        "complete-item-shop-detail-payload",
+        "shop-sale-enabled",
+        "price-and-availability-same-shop-row",
+        "surcharge-and-printer-defaults-explicit",
+        "legacy-item-price-sync-only",
+        "readback-verification"
       ]
     }
   ]

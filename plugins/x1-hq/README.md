@@ -17,6 +17,12 @@ only business-operation path and enforces authentication, workspace scope,
 delegated scopes, previews and approvals, quotas, audit policy, and circuit
 breakers.
 
+Every new authenticated connection starts with `bootstrap_hq_workspace`, which
+automatically persists a uniquely resolved company, brand, or shop path. When a
+client exposes only part of the tool catalog, `find_hq_tools` and the scoped
+read, preview, and commit dispatchers keep the remaining enabled capabilities
+available without weakening their authorization or approval rules.
+
 ## Current pilot status
 
 The hosted gateway is in a controlled write-enabled staging pilot. Available
@@ -45,7 +51,7 @@ execution attempts.
 
 ## Release policy
 
-Version 0.3.6 is versioned independently from the MCP gateway. Installing this
+Version 0.4.2 is versioned independently from the MCP gateway. Installing this
 plugin does not expand an HQ user's permissions or bypass X1's runtime controls.
 
 The marketplace-imported directory intentionally does not contain `mcp.json`.

@@ -20,7 +20,7 @@ For a reproducible installation, pin the marketplace to a published release
 tag:
 
 ```sh
-codex plugin marketplace add caterlord/X1.AgentPlugins --ref v0.3.6
+codex plugin marketplace add caterlord/X1.AgentPlugins --ref v0.4.2
 ```
 
 ## Available plugin

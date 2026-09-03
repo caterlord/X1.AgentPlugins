@@ -4,7 +4,7 @@ description: Perform everyday X1 HQ operations across menus, prices, availabilit
 compatibility: Requires an Agent Plugins client with Agent Skills and Streamable HTTP MCP support, plus access to the X1 HQ MCP gateway.
 metadata:
   author: X1
-  version: "0.1.2"
+  version: "0.1.4"
 ---
 
 # Operate X1 HQ
@@ -34,20 +34,20 @@ before workspace bootstrap on a new connection or after any connection error.
 1. Call `get_mcp_gateway_status` before planning the first operation on a new
    connection and whenever freshness or compatibility is uncertain. Use its
    operator-safe state; do not expose deployment details.
-2. Call `list_hq_workspace_options` on a new authenticated connection.
-3. Build candidate workspace/company/brand/shop paths from the current
-   selection, the user's explicit names, and hierarchy mappings already
-   verified during this authenticated connection.
-4. If exactly one candidate path remains at the level required by the request,
-   select its workspace with `commit_set_hq_workspace` and infer every
-   single-option parent level. This includes a named company, brand, or shop
-   that uniquely identifies one of several workspaces. Workspace selection
-   changes connection context; it is not an X1 HQ business-data mutation and
-   does not need business-change approval.
-5. Ask one concise question only when two or more candidate paths still match
-   at a level the operation requires. Never ask the user to confirm a unique
-   workspace, company, brand, or shop merely to restate discovered context.
-6. Resolve business names through discovery tools or
+2. Call `bootstrap_hq_workspace` with every company, brand, or shop name the
+   user supplied. It selects and persists a unique path without a business-
+   change approval. Do not replace this step with instructions for the user to
+   choose a workspace in the host UI.
+3. If it returns `needs_selection`, ask one concise question using only the
+   returned candidate paths, then call `bootstrap_hq_workspace` again with the
+   user's choice. Never ask the user to confirm a unique workspace, company,
+   brand, or shop merely to restate discovered context.
+4. If the bootstrap tool is unavailable on an older gateway, use the compatible
+   `list_hq_workspace_options` plus `commit_set_hq_workspace` sequence. Do not
+   attempt a business read until one of these selection paths succeeds.
+5. Treat a named company, brand, or shop that uniquely identifies one of
+   several workspaces as a unique path and select it automatically.
+6. Resolve later business names through discovery tools or
    `resolve_hq_scope_reference`. Never invent identifiers.
 7. Reuse verified mappings only while the authenticated connection remains
    valid. Refresh after reconnect, revocation, permission change, or a gateway
@@ -60,6 +60,16 @@ before workspace bootstrap on a new connection or after any connection error.
 
 See [references/workspace-and-scope.md](references/workspace-and-scope.md) for
 selection and ambiguity rules.
+
+## Discover tools progressively
+
+Prefer the exact task tool when it is callable. If the client has deferred or
+omitted it, call `find_hq_tools` with a concise capability query, select only an
+exact returned match, and invoke it through the returned
+`call_hq_read_tool`, `call_hq_preview_tool`, or `call_hq_commit_tool` dispatcher.
+Copy the returned `toolName` and follow its returned input schema; never guess a
+hidden name or payload. A dispatcher does not weaken the target tool's scope,
+workspace, preview, approval, idempotency, task, readback, or audit rules.
 
 ## Plan by user outcome
 

@@ -4,7 +4,7 @@ description: Analyze X1 HQ sales, item and category performance, payments, order
 compatibility: Requires an Agent Plugins client with Agent Skills and Streamable HTTP MCP support, plus access to the X1 HQ MCP gateway.
 metadata:
   author: X1
-  version: "0.1.1"
+  version: "0.1.3"
 ---
 
 # Analyze X1 HQ reports
@@ -19,20 +19,27 @@ tools. Keep facts, caveats, inference, and recommendations distinct.
 - Never call raw X1 HQ APIs or reconstruct a report from guessed endpoints.
 - This skill is read-only. A requested change activates `operate-x1-hq` and
   starts a fresh inspect, preview, approval, commit, and verification workflow.
-- `commit_set_hq_workspace` and the other workspace-selection context tools may
+- `bootstrap_hq_workspace` and the other workspace-selection context tools may
   persist connection context, but they do not mutate X1 HQ business data and do
   not require business-change approval.
 - Read [references/capabilities.md](references/capabilities.md) when routing a
   report request.
+
+If the exact report tool is not callable, use `find_hq_tools` with a concise
+report query and `modes=["read"]`, then invoke an exact returned match through
+`call_hq_read_tool` using its returned input schema. Never use a preview or
+commit dispatcher in this read-only skill, and never guess a hidden tool name.
 
 ## Establish scope
 
 Read [references/connection-and-access.md](references/connection-and-access.md)
 on a new connection or after a connection error.
 
-1. Call `get_mcp_gateway_status`, then on a new authenticated connection call
-   `list_hq_workspace_options` and
-   select the intended workspace with `commit_set_hq_workspace`.
+1. Call `get_mcp_gateway_status`, then call `bootstrap_hq_workspace` with any
+   company, brand, or shop name supplied by the user. It automatically persists
+   a unique match; ask one concise question only when it returns
+   `needs_selection`. Use `list_hq_workspace_options` plus
+   `commit_set_hq_workspace` only as an older-gateway compatibility fallback.
 2. Build candidate hierarchy paths from explicit names, the current selection,
    and mappings already verified in this authenticated conversation. Infer every
    single-option workspace, company, brand, and shop level automatically.

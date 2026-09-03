@@ -1,6 +1,6 @@
 {
   "name": "x1-hq",
-  "version": "0.3.6",
+  "version": "0.4.2",
   "description": "Operate, analyze, and import menus into X1 HQ through authenticated, tenant-scoped workflows.",
   "author": {
     "name": "X1",

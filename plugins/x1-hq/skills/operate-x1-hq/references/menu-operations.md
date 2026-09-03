@@ -7,12 +7,19 @@ Use the narrowest task-oriented menu workflow that satisfies the outcome.
 - Discovery and context: menus, categories, items, prices, modifier groups, and
   smart categories.
 - Single-item lifecycle: manage-menu-item preview and commit.
+- After the customer explicitly approves a displayed single-item preview, use
+  `approve_and_commit_menu_item` so the gateway issues and consumes the
+  approval internally; never ask the customer or assistant to supply an
+  approval token.
 - Price changes: price-adjustment preview and commit.
 - Availability: availability preview and commit.
 - Reclassification: category or smart-category preview and commit.
 - Bulk mixed changes: bulk-change preview and commit.
 - Imports: authoring context, deterministic draft validation, import preview,
   then approval-backed import commit.
+- Keep document-derived creates and updates, including existing-item names and
+  prices, in one import preview instead of creating one item preview per row.
+  Route explicit deletes separately through the single-item lifecycle.
 - Standalone modifier and combo authoring: use their dedicated preview and
   commit pairs. A document-menu import keeps accepted categories, items,
   modifier options, groups, prices, and mappings in its single import preview
