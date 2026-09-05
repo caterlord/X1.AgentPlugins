@@ -90,6 +90,16 @@ O1 | desired outcome | target scope | current-state read | preview | commit | de
 Use [references/multi-operation-confirmation.md](references/multi-operation-confirmation.md)
 for consolidation and partial-success rules.
 
+## Maintain existing menus
+
+For category, item, modifier-group or modifier-option renames, language placement,
+POS/public/kitchen labels, metadata, prices, availability, classification, ordering,
+and modifier/meal-set structure changes, use the typed maintenance
+workflow in [references/menu-maintenance.md](references/menu-maintenance.md). Check
+the connected gateway capabilities before choosing fields. Request
+`get_menu_edit_context` with `includeExtended: true` for wider edits, and prefer one
+`preview_menu_changes` change set for related changes to existing records.
+
 ## Read before write
 
 - Inspect the relevant current state before proposing a change.
@@ -102,6 +112,12 @@ for consolidation and partial-success rules.
 - When the source is a PDF, image, spreadsheet, CSV, pasted menu, or another
   customer document, hand off extraction and the pre-import review loop to the
   `import-menu-from-document` skill.
+- When an existing or just-imported catalog must be converted into a published
+  Online Ordering menu and finished with a test QR, hand off that full workflow
+  to the `publish-menu-online` skill.
+- When the user wants to add or replace an Online Ordering item photo,
+  online-category photo, shop logo, shop banner, or shop-list banner, use the
+  image preview and approved immediate-commit flow in `publish-menu-online`.
 - For device, store, online-ordering, or access-related work, follow
   [references/settings-devices-and-access.md](references/settings-devices-and-access.md).
 
@@ -166,3 +182,9 @@ For requests such as "find slow sellers and raise their prices," first use
 `analyze-x1-hq-reports` to identify evidence. Then start a fresh operational
 read and preview for the selected items. Report findings are neither a mutation
 preview nor approval.
+
+For approved online-ordering publication, settings or photo previews, use the
+matching commit tool with `approvalToken=user_explicitly_approved_final_preview`
+only when its discovered schema advertises this handoff. The gateway issues the
+real token internally; never request a token from the customer. Reuse the exact
+preview and idempotency key for a submission retry. Photos run immediately.

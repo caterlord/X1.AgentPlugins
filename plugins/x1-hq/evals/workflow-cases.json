@@ -2,6 +2,76 @@
   "version": "1.0.0",
   "cases": [
     {
+      "id": "publish-imported-menu-online-with-counter-qr",
+      "skill": "publish-menu-online",
+      "prompt": "The cafe menu import is complete. Publish Coffee and Pastries to online ordering at Central for counter dine-in and takeaway, allow prepaid and pay later, then give me a QR I can scan to test it.",
+      "expectedTools": [
+        "get_mcp_gateway_status",
+        "bootstrap_hq_workspace",
+        "list_item_categories",
+        "check_menu_publish_readiness",
+        "diagnose_online_ordering_menu_setup",
+        "preview_publish_online_ordering_catalog",
+        "commit_publish_online_ordering_catalog",
+        "get_online_ordering_test_qr"
+      ],
+      "invariants": [
+        "catalog-is-not-assumed-online",
+        "source-category-link-reused",
+        "descendant-categories-included",
+        "empty-parent-category-allowed",
+        "empty-leaf-category-warned",
+        "modifier-online-visibility-verified-separately",
+        "preview-before-commit",
+        "explicit-approval",
+        "published-menu-readback",
+        "counter-qr-rendered",
+        "raw-secret-url-not-printed"
+      ]
+    },
+    {
+      "id": "publish-menu-static-table-needs-selection",
+      "skill": "publish-menu-online",
+      "prompt": "Put our existing dinner menu online for table ordering at Harbour. There are several tables; show me a test QR when it is ready.",
+      "expectedTools": [
+        "bootstrap_hq_workspace",
+        "preview_publish_online_ordering_catalog",
+        "commit_publish_online_ordering_catalog",
+        "get_online_ordering_test_qr"
+      ],
+      "invariants": [
+        "static-table-mode",
+        "existing-enabled-table-token-only",
+        "table-selection-by-name",
+        "no-implicit-token-regeneration",
+        "qr-labelled-with-shop-mode-and-table"
+      ]
+    },
+    {
+      "id": "upload-online-menu-photos-before-qr",
+      "skill": "publish-menu-online",
+      "prompt": "The online menu is published. Use these PNGs for the Espresso online item, Coffee category slot 2, and Central shop logo, then show me a counter QR to check the result.",
+      "expectedTools": [
+        "bootstrap_hq_workspace",
+        "preview_upload_online_ordering_image",
+        "commit_upload_online_ordering_image",
+        "get_online_ordering_test_qr"
+      ],
+      "invariants": [
+        "exact-existing-target-resolved",
+        "online-item-image-not-pos-image",
+        "category-slot-preserved",
+        "replace-versus-add-visible",
+        "byte-length-and-sha256-previewed",
+        "explicit-approval-per-image-preview",
+        "exact-approved-bytes-only",
+        "immediate-commit-only",
+        "binary-not-printed-or-persisted",
+        "separate-commits-not-atomic",
+        "counter-qr-rendered-after-upload"
+      ]
+    },
+    {
       "id": "bilingual-pdf-menu-resumable-pre-import",
       "skill": "import-menu-from-document",
       "prompt": "Import this bilingual PDF menu into the confirmed Hong Kong brand 生財滷味. The PDF says 生記滷鵝, lists dine-in and takeaway only, prices goose feet separately for one and five pieces, lists removable ingredients for an assorted rice dish, and says A15 chooses two components from A1 and A4-A14. Stop after a safe preview.",
@@ -32,6 +102,46 @@
         "review-questions-deduplicated",
         "preview-before-commit",
         "explicit-approval"
+      ]
+    },
+    {
+      "id": "spreadsheet-hot-iced-operational-split",
+      "skill": "import-menu-from-document",
+      "prompt": "Import this bilingual drinks spreadsheet. It contains Cafe Latte (H/Ice), several drinks sharing one trailing (H/Ice) marker, an empty NORMAL COFFEE heading, and ten items whose prices I want set to HKD 0 temporarily. Stop after a safe preview.",
+      "expectedTools": [
+        "bootstrap_hq_workspace",
+        "find_hq_tools",
+        "call_hq_read_tool",
+        "call_hq_preview_tool"
+      ],
+      "invariants": [
+        "hot-iced-choice-captured-on-pos-order",
+        "hot-iced-items-split-by-default",
+        "shared-trailing-temperature-marker-applied-to-each-item",
+        "empty-source-heading-not-created-as-category",
+        "zero-price-business-impact-visible",
+        "placeholder-price-disablement-recommended",
+        "cross-language-semantic-review",
+        "preview-before-commit",
+        "explicit-approval"
+      ]
+    },
+    {
+      "id": "partial-clarification-and-dependent-records",
+      "skill": "import-menu-from-document",
+      "prompt": "I answered the missing prices with 'set all to zero', but I did not answer whether 'Pearl · Pudding · Chocolate' is an item, modifier group, or note. The category for three items also still needs confirmation. Continue the saved draft.",
+      "expectedTools": [
+        "get_menu_import_session",
+        "patch_menu_import_session",
+        "validate_menu_catalog_draft"
+      ],
+      "invariants": [
+        "leaf-level-clarification-state",
+        "price-answer-does-not-resolve-item-role",
+        "unanswered-question-id-preserved",
+        "dependent-records-described-as-blocked-not-unsupported",
+        "dependent-records-not-forced-to-exclusion",
+        "same-gateway-task-monitoring"
       ]
     },
     {
@@ -615,6 +725,69 @@
         "surcharge-and-printer-defaults-explicit",
         "legacy-item-price-sync-only",
         "readback-verification"
+      ]
+    },
+    {
+      "id": "rename-category-preserve-settings",
+      "skill": "operate-x1-hq",
+      "prompt": "Rename Snacks to Small Plates and set its alternate name to 小食. Keep its existing order, style, visibility and items.",
+      "expectedTools": [
+        "get_menu_edit_context",
+        "preview_menu_changes",
+        "approve_and_commit_menu_changes",
+        "get_task_status"
+      ],
+      "invariants": [
+        "read-before-write",
+        "preview-before-commit",
+        "explicit-approval",
+        "sparse-name-edit",
+        "no-invented-ids",
+        "readback-verification"
+      ]
+    },
+    {
+      "id": "correct-import-language-placement",
+      "skill": "import-menu-from-document",
+      "prompt": "The completed import put Thai in the alternate name and lost English. Correct the categories, items, groups and options to Chinese / Thai primary and English alternate using the original task. Keep kitchen labels and prices.",
+      "expectedTools": [
+        "start_menu_edit_session",
+        "preview_menu_changes",
+        "get_menu_change_preview",
+        "approve_and_commit_menu_changes",
+        "get_task_status"
+      ],
+      "invariants": [
+        "verified-import-identities",
+        "zero-creates",
+        "all-review-pages",
+        "explicit-approval",
+        "shared-item-conflict-check",
+        "readback-verification"
+      ]
+    },
+    {
+      "id": "mixed-menu-price-structure-maintenance",
+      "skill": "operate-x1-hq",
+      "prompt": "Change the curry description, raise its Central shop price to 12.50, remove an old shared option, and reorder the category. Show every effect before applying it.",
+      "expectedTools": [
+        "get_menu_edit_context",
+        "preview_menu_changes",
+        "get_menu_change_preview",
+        "approve_and_commit_menu_changes",
+        "get_task_status"
+      ],
+      "invariants": [
+        "resolved-existing-identities",
+        "hq-change-set-contract-2-required",
+        "complete-membership-and-order",
+        "shop-override-cleanup-reviewed",
+        "all-pages-same-digest",
+        "explicit-approval",
+        "one-hq-transaction",
+        "stale-state-blocks",
+        "readback-before-verified",
+        "uncertain-write-not-resent"
       ]
     }
   ]

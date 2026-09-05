@@ -3,7 +3,7 @@ name: import-menu-from-document
 description: Extract, structure, validate, resume, and preview X1 HQ menu imports from PDF, image, spreadsheet, CSV, pasted text, or another customer document. Use when a customer supplies menu source material, asks an agent to enter a menu, needs multi-turn clarification, or wants to resume a document-derived menu draft. Stop before commit unless the customer separately approves the final business-change preview.
 metadata:
   author: X1
-  version: "0.3.1"
+  version: "0.3.2"
 ---
 
 # Import Menu From Document
@@ -21,6 +21,11 @@ returned `call_hq_read_tool`, `call_hq_preview_tool`, or `call_hq_commit_tool`
 dispatcher. Copy its returned `toolName` and input schema; never guess either.
 This is the gateway's general progressive-disclosure path, not a menu-specific
 shortcut, and it preserves every delegated tool rule.
+When several workflow tools are hidden, discover their exact names and schemas
+in one or two focused queries and reuse those results for the active connection;
+do not rediscover the same successful action before every call. Keep the whole
+workflow on the same connected X1 HQ gateway instance—do not mix a plugin MCP
+server with an identically named app/connector mid-session.
 
 ## Establish the target and contract
 
@@ -39,12 +44,34 @@ shortcut, and it preserves every delegated tool rule.
    `draftItemTypes` in the canonical draft and use `hqItemTypes` only as
    downstream mapping context.
 4. Compare any business name printed in the source with the resolved target
-   brand. Preserve both names and ask for confirmation if they differ.
+   brand. Preserve both names and ask for confirmation if they differ. Treat
+   target confirmation and source-branded item names as separate decisions: if
+   an item still contains the old/source brand, show every affected item and ask
+   whether to preserve or replace that wording. Never interpret approval of the
+   target brand as silent approval to retain or rewrite embedded brand names.
 
 Read [references/document-extraction.md](references/document-extraction.md)
 when interpreting a PDF, image, spreadsheet, or bilingual/multi-column menu.
 That reference's spelling and OCR review is required before validation and
 preview; extraction confidence alone is not a language check.
+
+## Preserve language placement
+
+Use draft schema 1.3 `nameDisplayPolicy` when the customer specifies primary and
+alternate languages. Keep each `localizedNames` entry in its own source language;
+the policy composes display fields. For example, primary locales `["zh-HK", "th"]`
+with separator `" / "` and alternate locales `["en"]` stores Chinese/Thai in the
+primary name and English in the alternate name. Use `missingTranslation: "block"`.
+Validate required translations and field lengths; never infer language placement
+from array order, truncate a name, or use kitchen labels as overflow. Older draft
+1.2 remains supported without this field; upgrade the editable revision and create
+a fresh preview to adopt an explicit policy.
+
+For correction after a completed import, use `start_menu_edit_session` with the
+original `importTaskId` and the desired `nameDisplayPolicy`, then follow the
+`operate-x1-hq` skill’s menu-maintenance workflow. It uses
+verified HQ identities and only updates names. Do not reconstruct an import from
+names or rerun creates. Missing lineage requires reconciliation.
 
 ## Build traceable draft records
 
@@ -70,6 +97,15 @@ preview; extraction confidence alone is not a language check.
   `variantOptions` only when the target authoring context explicitly supports a
   single orderable parent with variants and that model matches the customer's
   intent.
+- Run an operational-choice pass before validation: for every slash, bracket,
+  `or`, `choose`, temperature, size, quantity, base, topping, and add-on phrase,
+  ask how the cashier and production staff will learn the customer's choice at
+  POS. A printed `H/Ice`, `Hot/Iced`, `熱／冰`, or `熱／凍` choice is not one
+  operationally complete sellable item. By default create separate hot and
+  iced/cold sellable items, put the temperature in every localized item name,
+  and preserve each temperature's price. Use one item only when a required POS
+  modifier or a supported variant model is deliberately chosen and the choice
+  will be captured on the order.
 - Treat the customer's secondary-language item name as `Item Name (Alt)`
   (`ItemNameAlt2` in HQ). Never put a translation into `Item Kitchen Name`
   (`ItemNameAlt`) or either kitchen-name alternate field unless the source or
@@ -82,6 +118,11 @@ preview; extraction confidence alone is not a language check.
   items within each category, and modifier options. Use layout prominence only
   when the source clearly communicates priority; never leave every display
   index at zero.
+- Do not create a leaf category with neither included items nor child categories
+  merely because a spreadsheet or document contains a heading. A category with
+  zero direct items is valid when one or more categories reference it through
+  `parentCategoryRef`; otherwise treat it as a likely layout artifact and remove
+  it before preview unless the customer explicitly wants empty HQ/POS navigation.
 - Inspect every enabled department and button style returned by
   `get_menu_authoring_context`. Assign `departmentRef` according to operational
   meaning and ask only when more than one department remains genuinely
@@ -97,6 +138,12 @@ preview; extraction confidence alone is not a language check.
   words such as `飯` or `麵` and redundant brand words while preserving meaning.
   Use standalone modifier options when the customer is choosing components;
   use `linkedItemRef` only when the choice is the complete sellable item.
+- For an ordinary paid add-on list whose options are independently selectable
+  and the source gives no `choose N` limit, use `selectionMode=multiple`,
+  `minSelections=0`, and `maxSelections` equal to the number of distinct
+  options. Use a maximum of one only for a genuinely mutually exclusive choice,
+  not merely because the source omits a limit. Ask when the semantics remain
+  ambiguous after reading the heading and neighboring items.
 - Use `categoryRefs`; do not add HQ-only `categoryId` or `departmentId` fields to
   a canonical draft.
 - Mark unresolved combos, incomplete choice lists, uncertain prices, source
@@ -121,6 +168,9 @@ preview; extraction confidence alone is not a language check.
 
 Call `start_menu_import_session` as soon as the first schema-valid draft exists.
 Keep the returned `importSessionId` and `draftRevision`.
+For name correction after a completed import, persist a menu edit session as
+described above instead of creating another import draft. For other supported
+import amendments, keep the existing document session workflow.
 
 - After reconnect or context loss, use `get_menu_import_session`; do not rebuild
   or resend the entire menu from memory.
@@ -130,6 +180,12 @@ Keep the returned `importSessionId` and `draftRevision`.
   answer, and retry once against the new revision. Never overwrite blindly.
 - Patch only the fields affected by an answer. Keep unresolved question IDs in
   the session so another turn can continue them.
+- Track answers at the smallest business-decision level. Make each numbered
+  question atomic, or label subquestions `1a`, `1b`, and so on. A price answer
+  does not resolve an item's role, category, temperature model, selection
+  limit, spelling, or channel. Patch only the answered leaf decisions and leave
+  every unanswered question ID unresolved; never treat a broad `confirm` or a
+  zero-price instruction as an answer to a neighboring semantic question.
 
 ## Validate and ask concise questions
 
@@ -147,6 +203,16 @@ individual findings.
   combined review questions. Show the extracted value, what is visibly printed
   when different, the suggested correction, and the affected records; never
   silently rewrite a language correction before the customer confirms it.
+- Check cross-language meaning, not only spelling. Flag category/item mismatches
+  such as risotto labelled as pasta, matcha translated as generic green tea, or
+  an ingredient present in only one language. Treat a customer's confirmation
+  as applying only to the exact mismatches shown.
+- A customer-directed zero price is valid, but it is operationally significant:
+  explain that an enabled item can be sold for no charge, preserve the customer
+  instruction as evidence, show every zero-priced item in the final review, and
+  recommend keeping placeholder-priced items disabled until real prices are
+  supplied. Follow an explicit decision to enable them, but never present the
+  zero prices as warning-free extraction.
 - If a record is excluded, preserve the reason and evidence.
 - Do not ask the customer to enumerate combo choices that can be reconstructed
   deterministically from the source. Ask only when the candidate boundary or a
@@ -166,6 +232,10 @@ When validation has no blocking findings, call `preview_import_menu_catalog`
 with `brandId` plus `importSessionId`.
 Preview is non-mutating and may remain available while the gateway is read-only.
 Never treat a draft session or validation response as a business change preview.
+Inspect and present the structured result from that call; do not create repeated
+previews merely to reread pending records or warnings. Re-preview only after a
+draft/review change, expiry, connection invalidation, or a material current-HQ
+change, because each preview creates new lineage, generated codes, and expiry.
 
 The preview is a short-lived server-side snapshot, not a downloaded menu file.
 Its `previewId`, frozen generated codes, current-HQ comparison, and approval
@@ -240,6 +310,9 @@ Immediately after every successful technical preview, show the complete
 proposed import to the customer in the same response. Use the returned
 `customerReview.markdown` verbatim or preserve all of its rows in equivalent
 Markdown tables. Do not wait for the customer to ask what will be imported.
+If unresolved decisions remain, lead with a short, atomic decision list and its
+POS/business impact before the full tables so the customer does not need to
+scroll through a large catalog to discover what requires an answer.
 
 The review must include:
 
@@ -280,7 +353,10 @@ the atomic action is missing. Monitor the returned task with
 
 Treat the task ID as the handle for the import after submission. While its
 status is `queued` or `running`, poll `get_task_status`; never submit another
-commit or call `retry_task`. If a transport timeout occurs after a task ID was
+commit or call `retry_task`. Poll through the same connected X1 HQ gateway/tool
+dispatcher that returned the task ID; do not switch to another connector or app
+instance, where the task may correctly appear not to exist. If a transport
+timeout occurs after a task ID was
 returned, retry only that status action. If the initial commit call
 times out before a task ID is received, repeat that exact call once with the
 same preview ID and the same idempotency key: the gateway returns the existing

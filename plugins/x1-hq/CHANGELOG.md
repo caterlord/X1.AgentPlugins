@@ -1,5 +1,71 @@
 # Changelog
 
+## 0.7.1 — 2026-09-05
+
+- Complete the public approval handoff for online publication, settings and image
+  uploads; issue real tokens only inside the gateway after exact-preview approval.
+- Preserve task deduplication, immediate-only photos, scope and expiry checks.
+- Verify the connector dispatcher path in regression tests.
+
+## 0.7.0 — 2026-09-05
+
+- Extend the shared menu change-set workflow to metadata, item classification,
+  shop prices and availability, group price overrides, modifier membership,
+  item/group and meal-set mappings, and complete item/category ordering.
+- Freeze every direct and indirect effect in one paged review. Wider changes use
+  HQ contract 2.0.0 and one conditional transaction with verified readback.
+- Preserve the existing name-only contract and focused tools. Recover interrupted
+  mixed changes without blindly repeating writes; enforce frozen shop scope on replay.
+- Validate schema unions and numeric precision in gateway input handling.
+
+## 0.6.0
+
+- Add typed category, item, modifier-group, and shared modifier-item name edits,
+  with field-specific previews, explicit clearing, persisted sessions, and one
+  approved background task. Preserve unrelated menu settings.
+- Add draft 1.3 language display policies, including multiple languages in the
+  primary field and a separate alternate field. Keep legacy 1.2 drafts valid.
+- Correct completed imports using their verified task identities without creating
+  replacement records. Require complete paged review and fresh approval.
+- Check HQ versions atomically, stop on partial failure, and reconcile interrupted
+  writes through persisted checkpoints without sending duplicate mutations.
+- Complete the modifier-mapping GET dependency used by drink-set previews.
+- Requires matching HQ maintenance API and gateway rollout; package presence
+  alone does not establish deployed support.
+
+## 0.5.0
+
+- Add approval-gated JPG/PNG uploads for dedicated Online Ordering item images,
+  three online-category image slots, and shop logo/banner/list-banner images.
+- Bind each upload to previewed file size and SHA-256, validate its actual file
+  signature at commit, execute immediately, and redact raw Base64 from audit
+  records and asynchronous task storage.
+- Add a dedicated `publish-menu-online` workflow for converting an existing or
+  just-imported catalog into linked Online Ordering categories and a published
+  menu combination for selected shops.
+- Configure counter, preorder, or static-table ordering in the same approved
+  publication, while preserving unrelated category, menu, shop, schedule, and
+  channel state.
+- Generate HQ-compatible counter, preorder, and existing static-table test QR
+  codes after readback; require a table choice when several static tokens exist
+  and never regenerate tokens implicitly.
+- Extend the authenticated HQ route contract only for the menu-combination,
+  smart-category, and table-token endpoints needed by this governed workflow.
+
+## 0.4.3
+
+- Add an operational-choice review that splits hot/iced drinks by default unless
+  a required POS choice mechanism captures temperature on the order.
+- Keep clarification state at the leaf-decision level so a price answer cannot
+  silently resolve an item's role, category, spelling, selection limit, or
+  channel.
+- Flag empty extracted leaf categories and zero-priced sellable items, strengthen
+  cross-language and embedded source-brand review, and default independent paid
+  add-ons to multiple selection when no source limit is stated.
+- Describe child records as blocked by unresolved dependencies instead of
+  claiming the import endpoint does not support them, and require task polling
+  through the same gateway instance that created the task.
+
 ## 0.4.2
 
 - Add `approve_and_commit_menu_item` so an explicitly approved item create,

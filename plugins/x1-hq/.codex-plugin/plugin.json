@@ -1,7 +1,7 @@
 {
   "name": "x1-hq",
-  "version": "0.4.2",
-  "description": "Operate, analyze, and import menus into X1 HQ through authenticated, tenant-scoped workflows.",
+  "version": "0.7.1",
+  "description": "Operate, analyze, import menus, and publish online ordering in X1 HQ through authenticated workflows.",
   "author": {
     "name": "X1",
     "url": "https://x1.tech"
@@ -21,13 +21,15 @@
   "interface": {
     "displayName": "X1 HQ",
     "shortDescription": "Operate, analyze, and import X1 HQ menus.",
-    "longDescription": "Manage menus, document imports, settings, devices, staff workflows, and reports through authenticated, tenant-scoped X1 HQ tools.",
+    "longDescription": "Manage menu imports, existing menu records and prices, online publication and photos, settings, and reports through authenticated, tenant-scoped X1 HQ tools.",
     "developerName": "X1",
     "category": "Business",
     "capabilities": [
       "Authenticated X1 HQ access",
       "Tenant-scoped operations",
       "Resumable document-menu imports",
+      "Menu editing and price maintenance",
+      "Online ordering publication and photos",
       "Read-only reporting"
     ],
     "websiteURL": "https://x1.tech",

@@ -102,12 +102,31 @@ target can sell one parent item with selectable variants and the source or
 customer intends that experience. A shared printed heading alone is not enough
 to choose the variant-parent model.
 
+Temperature is an operational choice, not display-only text. Treat `H/Ice`,
+`Hot/Iced`, `熱／冰`, and `熱／凍` like independently orderable size choices:
+create separate temperature-labelled sellable items by default. Preserve a
+single item only when a required modifier or supported variant captures the
+choice on the POS order. Verify combined source rows carefully—a line may list
+several drinks and apply one trailing `(H/Ice)` marker to all of them.
+
+After extraction, remove leaf categories with neither included items nor child
+categories unless the source or customer explicitly requires an empty navigation
+placeholder. A category with no direct items is valid when another category
+references it as its parent. An all-caps title above another category heading is
+often a document section title, not a second empty leaf category.
+
 ## Modifiers and combos
 
 Use a modifier group when the source establishes a selectable set and its
 minimum/maximum selection count. A combo choice list may be explicit or
 deterministically derivable from an item-code range, neighboring dishes, and
 stated exclusions.
+
+For a paid add-on list where each option can be ordered independently and the
+source states no limit, default to optional multiple selection with a maximum
+equal to the number of distinct options. Reserve maximum one for mutually
+exclusive choices. Never turn absence of a printed limit into an assumed
+single-selection rule.
 
 For a derived combo:
 

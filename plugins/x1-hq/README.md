@@ -58,3 +58,10 @@ The marketplace-imported directory intentionally does not contain `mcp.json`.
 OpenAI workspace import treats plugins that declare MCP servers there as
 desktop-only. The portable Agent Plugins distribution is generated separately
 with `node scripts/package-portable-agent-plugin.mjs`.
+
+## Version 0.7.1
+
+Adds menu metadata, price and structure maintenance; clearer document-import review;
+and online-ordering publication, photo uploads, and test QR verification. Approved
+online-ordering changes use the gateway’s internal approval handoff. Start a new
+task after updating to load the current workflow guidance.

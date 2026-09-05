@@ -20,7 +20,7 @@ For a reproducible installation, pin the marketplace to a published release
 tag:
 
 ```sh
-codex plugin marketplace add caterlord/X1.AgentPlugins --ref v0.4.2
+codex plugin marketplace add caterlord/X1.AgentPlugins --ref v0.7.1
 ```
 
 ## Available plugin
@@ -32,8 +32,9 @@ It helps an assistant resolve workspace and shop scope, inspect menus and device
 settings, analyze reports, prepare previews, request genuine approvals, verify
 outcomes, and return one consolidated operational report.
 
-The current pilot is a controlled write-enabled staging rollout. The
-gateway—not the skill text—is the authority for every capability.
+The production gateway supports governed menu imports, menu maintenance, and
+online ordering publication and photos. The gateway is the authority for every
+capability.
 Authentication, delegated scopes, user permissions, workspace scope, approval
 requirements, audit rules, quotas, feature flags, and circuit breakers are all
 enforced server-side.
