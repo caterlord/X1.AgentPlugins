@@ -1,6 +1,6 @@
 ---
 name: operate-x1-hq
-description: Perform everyday X1 HQ operations across menus, prices, availability, online ordering, shops, devices, cash drawers, and other settings exposed by the connected gateway. Use for inspecting, diagnosing, importing, creating, updating, copying, enabling, disabling, or configuring X1 HQ, including multi-shop and multi-operation requests. For reporting-only analysis, use analyze-x1-hq-reports.
+description: Perform everyday X1 HQ operations across menus, prices, availability, online ordering, shops, tables, floorplans, devices, cash drawers, and other settings exposed by the connected gateway. Use for inspecting, diagnosing, importing, creating, updating, copying, enabling, disabling, or configuring X1 HQ, including multi-shop and multi-operation requests. For reporting-only analysis, use analyze-x1-hq-reports.
 compatibility: Requires an Agent Plugins client with Agent Skills and Streamable HTTP MCP support, plus access to the X1 HQ MCP gateway.
 metadata:
   author: X1
@@ -90,6 +90,12 @@ O1 | desired outcome | target scope | current-state read | preview | commit | de
 Use [references/multi-operation-confirmation.md](references/multi-operation-confirmation.md)
 for consolidation and partial-success rules.
 
+## Tables and floorplans
+
+For table lists, split-table configuration, seating layout edits or creation from
+an uploaded diagram, use `manage-tables-and-floorplans`. Resolve missing split
+counts before creating parent tables; preserve existing splits on ordinary edits.
+
 ## Maintain existing menus
 
 For category, item, modifier-group or modifier-option renames, language placement,
@@ -99,6 +105,13 @@ workflow in [references/menu-maintenance.md](references/menu-maintenance.md). Ch
 the connected gateway capabilities before choosing fields. Request
 `get_menu_edit_context` with `includeExtended: true` for wider edits, and prefer one
 `preview_menu_changes` change set for related changes to existing records.
+
+## Promotions and lunch drink benefits
+
+For mandatory/optional promo rules, included drinks, fixed-price add-ons, or
+percentage drink discounts, read [references/promotion-rules.md](references/promotion-rules.md).
+Use the dedicated combo preview/commit pair and the connected schema; menu
+import and menu-maintenance approval helpers cannot commit a promo preview.
 
 ## Read before write
 

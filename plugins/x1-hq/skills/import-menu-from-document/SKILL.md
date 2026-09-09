@@ -392,3 +392,31 @@ answered extraction questions.
   next step is unavailable. Never call raw HQ APIs as a workaround.
 - If the source cannot support a safe value, leave it unresolved or exclude the
   record. Do not guess.
+
+## Preserve the offer across extraction and configuration
+
+For meal deals, record the service model before choosing modifiers or promotions:
+can customers choose or change drinks/add-ons later, or must they select them
+with the meal? Reuse information the customer already supplied. Layout in the
+source image alone cannot answer this. Use `operate-x1-hq`'s promotion-rules
+reference when table service or later choices affect the implementation.
+
+Maintain a requirement ledger across the import and promotion phases: source
+requirement, proposed representation, configured/verified evidence, unsupported
+condition, or explicit customer exclusion. Include days/times, channel limits,
+independent add-ons, exclusions and quantity rules. Keep promo requirements in
+`comboRules[].requirements` when the schema supports it. A catalog import may
+finish while promo work remains outstanding; report those states separately.
+Never claim the entire offer is configured because its items were imported.
+Carry unresolved requirements into the promotion preview rather than dropping
+them to obtain a supported result. Only an explicit customer decision can remove
+a requested condition from scope.
+
+## Promotions after menu import
+
+An import's unsupported combo candidate does not establish that HQ lacks that
+promotion feature. After the menu records exist, use `operate-x1-hq` and its
+promotion-rules reference to discover the current combo preview/commit pair.
+Keep the promo approval separate from the catalog import approval. Preserve
+mandatory/optional groups, exact-price conditions, percentage deductions, and
+eligible drink lists instead of replacing them with fixed modifier prices.

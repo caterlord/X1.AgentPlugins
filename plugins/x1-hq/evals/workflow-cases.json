@@ -789,6 +789,125 @@
         "readback-before-verified",
         "uncertain-write-not-resent"
       ]
+    },
+    {
+      "id": "floorplan-hand-drawing-missing-splits",
+      "skill": "manage-tables-and-floorplans",
+      "prompt": "Create the floorplan at Central from this sketch: room Dining, table 1 at left, table 2 at right, each with four chairs. No split count is written.",
+      "expectedTools": [
+        "get_mcp_gateway_status",
+        "bootstrap_hq_workspace",
+        "get_table_settings_context",
+        "preview_table_settings",
+        "commit_table_settings"
+      ],
+      "invariants": [
+        "read-before-write",
+        "split-choice-required",
+        "chairs-are-not-splits",
+        "diagram-visual-review",
+        "no-invented-ids"
+      ]
+    },
+    {
+      "id": "plain-tables-split-overrides",
+      "skill": "manage-tables-and-floorplans",
+      "prompt": "Create tables 1 through 10 in Dining, with two splits each except table 10 which has none.",
+      "expectedTools": [
+        "get_mcp_gateway_status",
+        "bootstrap_hq_workspace",
+        "get_table_settings_context",
+        "preview_table_settings",
+        "commit_table_settings"
+      ],
+      "invariants": [
+        "explicit-split-overrides",
+        "one-parent-per-operation",
+        "preview-before-commit",
+        "readback-verification"
+      ]
+    },
+    {
+      "id": "existing-floorplan-preserve-splits",
+      "skill": "manage-tables-and-floorplans",
+      "prompt": "Move table 12 to the top right and rotate it 90 degrees using my revised floorplan. Keep everything else.",
+      "expectedTools": [
+        "get_mcp_gateway_status",
+        "bootstrap_hq_workspace",
+        "get_table_settings_context",
+        "preview_table_settings",
+        "commit_table_settings"
+      ],
+      "invariants": [
+        "existing-table-update-not-create",
+        "omitted-splits-preserved",
+        "geometry-only-patch"
+      ]
+    },
+    {
+      "id": "floorplan-resume-partial",
+      "skill": "manage-tables-and-floorplans",
+      "prompt": "The floorplan import stopped after tables 1 and 2 succeeded. Continue the remaining tables using our saved draft.",
+      "expectedTools": [
+        "get_mcp_gateway_status",
+        "bootstrap_hq_workspace",
+        "get_table_settings_context",
+        "preview_table_settings",
+        "commit_table_settings"
+      ],
+      "invariants": [
+        "partial-results",
+        "idempotency",
+        "no-duplicate-parents",
+        "readback-verification"
+      ]
+    },
+    {
+      "id": "floorplan-background-limit",
+      "skill": "manage-tables-and-floorplans",
+      "prompt": "Use this architectural PDF as the background and place the tables over it.",
+      "expectedTools": [
+        "get_mcp_gateway_status",
+        "bootstrap_hq_workspace",
+        "get_table_settings_context",
+        "preview_table_settings",
+        "commit_table_settings"
+      ],
+      "invariants": [
+        "unsupported-background-upload-disclosed",
+        "pdf-pages-visually-inspected",
+        "editable-layout-independent-of-background"
+      ]
+    },
+    {
+      "id": "table-service-lunch-offer-lifecycle",
+      "skill": "operate-x1-hq",
+      "prompt": "Use the supplied lunch menu for Example Cafe: meals 1–8, named included drinks, other drink categories half price except smoothies, cake for HKD20, weekdays noon–3 pm. This is table service and customers may order drinks or cake later. Inspect existing drinks and cake promos, consolidate them, show the saved preview again when asked, and apply only after I approve. If scheduling is unsupported, retain it as unresolved until I explicitly exclude it. Simulate a replacement readback failure and a retried submission.",
+      "expectedTools": [
+        "bootstrap_hq_workspace",
+        "get_menu_catalog_draft_schema",
+        "get_promotion_rule_editor",
+        "preview_manage_combo_rule",
+        "get_hq_change_preview",
+        "commit_manage_combo_rule",
+        "get_task_status"
+      ],
+      "invariants": [
+        "service-model-before-modifiers",
+        "all-eight-meals-preserved",
+        "independent-cake-group",
+        "free-item-before-category-discount",
+        "future-category-items-remain-eligible",
+        "smoothies-excluded-without-dropping-intent",
+        "schedule-required-until-explicitly-excluded",
+        "saved-preview-not-reconstructed",
+        "one-exact-plan-approval",
+        "verify-replacement-before-retirement",
+        "readback-failure-stops-retirement",
+        "retry-does-not-create-duplicates",
+        "partial-outcomes-reported",
+        "blank-reference-codes-omitted"
+      ]
     }
   ]
 }

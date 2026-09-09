@@ -21,7 +21,7 @@ Use the narrowest task-oriented menu workflow that satisfies the outcome.
   prices, in one import preview instead of creating one item preview per row.
   Route explicit deletes separately through the single-item lifecycle.
 - Standalone modifier and combo authoring: use their dedicated preview and
-  commit pairs. A document-menu import keeps accepted categories, items,
+  commit pairs. For promotions, follow [promotion-rules.md](promotion-rules.md). A document-menu import keeps accepted categories, items,
   modifier options, groups, prices, and mappings in its single import preview
   and approval-backed commit.
 - Diagnosis: use visibility, readiness, or online-menu setup diagnostics. A
