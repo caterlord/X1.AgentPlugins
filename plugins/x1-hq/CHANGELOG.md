@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.8.0 — 2026-09-09
+
+- Create, edit and disable promotion rules with category, item and exact-price benefits.
+- Retrieve saved previews and editable promotion drafts without reconstructing them.
+- Track unmet offer requirements and verify replacements before retiring old promos.
+- Improve table-service lunch offer guidance, independent add-ons, category eligibility and recovery.
+- Include dining-table and floorplan workflows exposed by the production gateway.
+
 ## 0.7.1 — 2026-09-05
 
 - Complete the public approval handoff for online publication, settings and image

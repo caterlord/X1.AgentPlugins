@@ -1,11 +1,13 @@
 # X1 HQ Agent Plugin
 
 X1 HQ is a conversational operating and reporting plugin for X1 merchants. The
-workspace-native package combines an OpenAI plugin wrapper, three Agent Skills,
+workspace-native package combines an OpenAI plugin wrapper, five Agent Skills,
 and the registered X1 HQ Agent app backed by the hosted X1 HQ MCP gateway:
 
 - `operate-x1-hq` handles everyday operational work across menus, settings,
   devices, online ordering, and other capabilities exposed by the gateway.
+- `manage-tables-and-floorplans` handles dining tables and editable seating layouts.
+- `publish-menu-online` handles online menus, photos and test QR verification.
 - `analyze-x1-hq-reports` handles read-only reporting and investigation.
 - `import-menu-from-document` handles resumable PDF, image, spreadsheet, CSV,
   and pasted-menu extraction, complete table review, explicit approval, and
@@ -23,9 +25,9 @@ client exposes only part of the tool catalog, `find_hq_tools` and the scoped
 read, preview, and commit dispatchers keep the remaining enabled capabilities
 available without weakening their authorization or approval rules.
 
-## Current pilot status
+## Runtime availability
 
-The hosted gateway is in a controlled write-enabled staging pilot. Available
+The plugin connects to the production X1 HQ gateway. Available
 reads, previews, and commits still depend on the signed-in HQ user's delegated
 scopes, workspace permissions, tenant scope, and the gateway's current rollout
 gates. X1 may narrow or disable capabilities without requiring users to
@@ -51,7 +53,7 @@ execution attempts.
 
 ## Release policy
 
-Version 0.4.2 is versioned independently from the MCP gateway. Installing this
+The plugin is versioned independently from the MCP gateway. Installing this
 plugin does not expand an HQ user's permissions or bypass X1's runtime controls.
 
 The marketplace-imported directory intentionally does not contain `mcp.json`.
@@ -59,9 +61,9 @@ OpenAI workspace import treats plugins that declare MCP servers there as
 desktop-only. The portable Agent Plugins distribution is generated separately
 with `node scripts/package-portable-agent-plugin.mjs`.
 
-## Version 0.7.1
+## Version 0.8.0
 
-Adds menu metadata, price and structure maintenance; clearer document-import review;
-and online-ordering publication, photo uploads, and test QR verification. Approved
-online-ordering changes use the gateway’s internal approval handoff. Start a new
-task after updating to load the current workflow guidance.
+Adds promotion creation, editing, saved previews, requirement tracking and ordered
+update/retirement plans with recovery. Includes dining tables and floorplans,
+menu imports and maintenance, online publication and reporting. Start a new task
+after updating to load the current skills and tool schemas.

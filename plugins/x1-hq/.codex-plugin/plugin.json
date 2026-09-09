@@ -1,6 +1,6 @@
 {
   "name": "x1-hq",
-  "version": "0.7.1",
+  "version": "0.8.0",
   "description": "Operate, analyze, import menus, and publish online ordering in X1 HQ through authenticated workflows.",
   "author": {
     "name": "X1",
