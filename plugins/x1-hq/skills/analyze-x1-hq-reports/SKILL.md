@@ -4,7 +4,7 @@ description: Analyze X1 HQ sales, item and category performance, payments, order
 compatibility: Requires an Agent Plugins client with Agent Skills and Streamable HTTP MCP support, plus access to the X1 HQ MCP gateway.
 metadata:
   author: X1
-  version: "0.1.3"
+  version: "0.1.4"
 ---
 
 # Analyze X1 HQ reports
@@ -55,7 +55,9 @@ on a new connection or after a connection error.
 
 1. Convert relative periods into exact dates using the user's locale and current
    date, then echo those dates in the answer.
-2. Select the narrowest normalized report tool that answers the question.
+2. Select the normalized reports needed to answer the requested level of detail.
+   For a sales report or breakdown, read the report-routing reference and include
+   item and category performance; a headline summary alone is insufficient.
 3. Prefer an existing task-level summary or comparison over rebuilding the same
    metric from lower-level rows.
 4. Handle empty, partial, caveated, and truncated results explicitly.

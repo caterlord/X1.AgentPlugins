@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.2 — 2026-09-17
+
+- Include item and category breakdowns in detailed sales reports.
+- Clarify inclusive dates, workday grouping, ranking limits, and payment filters.
+- Identify missing report sections explicitly when other sales data is available.
+
 ## 0.8.1 — 2026-09-17
 
 - Install the complete portable MCP package from the public marketplace.
