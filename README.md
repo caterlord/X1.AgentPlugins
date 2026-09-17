@@ -2,6 +2,17 @@
 
 This is the public marketplace for official X1 agent plugins.
 
+## Install in ChatGPT desktop
+
+Add `https://github.com/caterlord/X1.AgentPlugins` as a self-hosted marketplace
+and install **X1 HQ**. The marketplace installs a portable package that connects
+directly to `https://mcp.x1.tech/mcp`. Complete X1 sign-in through the client’s
+MCP OAuth flow; no X1 development ChatGPT app is required.
+
+OpenAI currently marks imported plugins that declare MCP servers as
+[desktop-only](https://learn.chatgpt.com/docs/enterprise/plugin-management#desktop-only-plugins),
+even when the server uses HTTPS. This package does not provide ChatGPT web support.
+
 ## Install in Codex
 
 Add this GitHub repository as a marketplace:
@@ -16,12 +27,9 @@ so the task loads the installed plugin version and its current tools. The
 plugin automatically uses a uniquely resolved workspace hierarchy and asks
 only when more than one matching scope remains.
 
-For a reproducible installation, pin the marketplace to a published release
-tag:
-
-```sh
-codex plugin marketplace add caterlord/X1.AgentPlugins --ref v0.8.0
-```
+For a reproducible installation, add `--ref <published-release-tag>` to the
+marketplace command. Releases through `v0.8.0` use the previous app-dependent
+package; choose a published release containing the portable installation fix.
 
 ## Available plugin
 
@@ -39,10 +47,9 @@ Authentication, delegated scopes, user permissions, workspace scope, approval
 requirements, audit rules, quotas, feature flags, and circuit breakers are all
 enforced server-side.
 
-See [`plugins/x1-hq`](plugins/x1-hq) for the workspace-native package, skills,
-capability references, and evaluation cases. Portable Agent Plugins 1.0.0
-clients should use the `x1-hq-agent-plugin` artifact attached to each GitHub
-release; its manifests are maintained under [`portable/x1-hq`](portable/x1-hq).
+See [`plugins/x1-hq`](plugins/x1-hq) for the complete Agent Plugins 1.0.0
+package, shared skills, capability references, and evaluation cases. Both the
+marketplace and portable release artifact use this directory.
 
 ## Keep the plugin up to date
 
@@ -63,18 +70,29 @@ A marketplace added with `--ref` remains pinned to that Git ref. Moving a
 pinned installation to another release is an explicit administrator or user
 action; changing files on `main` does not move the pin.
 
-The Git marketplace distributes the plugin manifest, skills, and app reference.
-The referenced **X1 HQ Agent** app and gateway own the live MCP tool metadata.
-Before publishing a release that changes tool names, schemas, annotations, or
-OAuth scopes, X1 must deploy the gateway, refresh the app metadata, and validate
-the connected OAuth client first. End users do not perform this developer
-refresh.
+The Git marketplace distributes the portable manifests and skills. The MCP
+configuration points directly to the X1 gateway, which owns live tool metadata
+and authentication. Client policies and OAuth consent still apply.
 
-Users normally do not need to reconnect their X1 HQ account for skill-only
-updates. If a release requests additional OAuth scopes, X1 must first add those
-scopes to the existing OAuth client allowlist. The user can then reconnect to
-review and grant the new permissions. Publishing the Git plugin by itself does
-not update an OAuth client's allowed scopes.
+### Migrate an existing app-dependent installation
+
+For version 0.8.1 or later, refresh the marketplace and reinstall
+**X1 HQ**, then start a new task. Complete MCP OAuth sign-in if prompted; the
+previous registered-app connection may not transfer to the direct MCP client.
+For workspace-managed imports, ask the administrator to sync the marketplace.
+Pinned installations must move to a release containing this fix.
+
+If a connection dialog still names `asdk_app_…`, check that the installed package
+is the updated version and that the marketplace is not pinned to `v0.8.0` or
+older. The portable package contains no `.app.json` reference.
+
+## Validate and package
+
+Run `node scripts/package-portable-agent-plugin.mjs`. It checks that the
+marketplace resolves to the complete portable package, rejects app-dependent
+wrappers, verifies the MCP endpoint and skills, then copies the package to
+`.artifacts/agent-plugin/x1-hq` and writes artifact checksums. Before publishing,
+verify installation and OAuth sign-in in a fresh supported client session.
 
 ## Security and privacy
 

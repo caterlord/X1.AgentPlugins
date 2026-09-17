@@ -1,8 +1,9 @@
 # X1 HQ Agent Plugin
 
 X1 HQ is a conversational operating and reporting plugin for X1 merchants. The
-workspace-native package combines an OpenAI plugin wrapper, five Agent Skills,
-and the registered X1 HQ Agent app backed by the hosted X1 HQ MCP gateway:
+portable Agent Plugins 1.0.0 package combines shared skills with a direct
+Streamable HTTP connection to the hosted X1 HQ MCP gateway. It has no registered
+ChatGPT app dependency:
 
 - `operate-x1-hq` handles everyday operational work across menus, settings,
   devices, online ordering, and other capabilities exposed by the gateway.
@@ -35,10 +36,10 @@ reinstall this plugin.
 
 ## Compatibility
 
-- OpenAI ChatGPT workspaces and Codex through the included `.codex-plugin`
-  wrapper and `.app.json` reference.
-- Agent Plugins 1.0.0 clients through the portable release artifact generated
-  from `portable/x1-hq` and these shared skills.
+- Agent Plugins 1.0.0 clients with Streamable HTTP and MCP OAuth support.
+- ChatGPT desktop and Codex through the repository marketplace. OpenAI currently
+  marks imported plugins with MCP declarations as desktop-only, including remote
+  HTTPS servers; this package does not provide ChatGPT web support.
 - An X1 HQ user account with access to at least one workspace.
 
 See the repository-level README for installation instructions.
@@ -56,10 +57,15 @@ execution attempts.
 The plugin is versioned independently from the MCP gateway. Installing this
 plugin does not expand an HQ user's permissions or bypass X1's runtime controls.
 
-The marketplace-imported directory intentionally does not contain `mcp.json`.
-OpenAI workspace import treats plugins that declare MCP servers there as
-desktop-only. The portable Agent Plugins distribution is generated separately
-with `node scripts/package-portable-agent-plugin.mjs`.
+The marketplace installs this complete directory, including `plugin.json`,
+`mcp.json`, and `skills/`. Generate the identical portable release package with
+`node scripts/package-portable-agent-plugin.mjs`. Keep app references and native
+wrappers out of this directory so all clients use the direct MCP connection.
+
+## Version 0.8.1
+
+Removes the development ChatGPT app dependency from marketplace installation.
+Users authenticate directly with X1 through their client's MCP OAuth flow.
 
 ## Version 0.8.0
 

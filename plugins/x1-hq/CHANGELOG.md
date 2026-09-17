@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.1 — 2026-09-17
+
+- Install the complete portable MCP package from the public marketplace.
+- Remove the development ChatGPT app dependency and duplicate manifest layout.
+- Build release artifacts from the same package used by marketplace installs.
+
 ## 0.8.0 — 2026-09-09
 
 - Create, edit and disable promotion rules with category, item and exact-price benefits.

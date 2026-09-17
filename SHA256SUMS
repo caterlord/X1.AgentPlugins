@@ -1,8 +1,8 @@
-c98840b83c0ab5c126f44b801514602de5509b9f8a5459478a21cdd973e59d4b  plugins/x1-hq/.app.json
-4492ecfc11b54e9a4d35cd70411ab8f699704d356442a31f602f00d5b52731be  plugins/x1-hq/.codex-plugin/plugin.json
-e4c14567f420a6721e3e6086843e3e3b14abbdd16b7df22f2590c2df417fdbf9  plugins/x1-hq/CHANGELOG.md
-0d6b4c81f0d16e7f266dcf45d2c9c7088bcc81f3915747dc7e909f7e70bb6666  plugins/x1-hq/README.md
+e09afd760275de1abcc8ba2cb7a060786ccb76d58ec3061612f7d31aee214ab5  plugins/x1-hq/CHANGELOG.md
+14a10c02fac6d556102d1997499bd923f10e00becd393ed2a4ff3cf243070534  plugins/x1-hq/README.md
 5966a8b5abe4b9a6f1a5a8f40ed9c358e8529405eac62298cfa39d533075f358  plugins/x1-hq/evals/workflow-cases.json
+52a8e4294ec7a7b9882f4364f10401a3a31cf017215e45e201a0a49c4b088202  plugins/x1-hq/mcp.json
+d6f0f023f3c9668b45ed152dc54318573c0f65400c0000f71beb88b58d0a73c9  plugins/x1-hq/plugin.json
 02b19604f9b7b6b3f2949b4fd2af3ec6436403357be3b5a0c17979da587a0af8  plugins/x1-hq/schemas/README.md
 4c357db0e4359280ce055b98bf167fca548bed3a8992391d4ecff64276e3e6c7  plugins/x1-hq/schemas/mcp.schema.json
 cc65b53b668db7038f8ce1473c00f41740303ea0a0ec3e2c694e63cb51bfe0a2  plugins/x1-hq/schemas/plugin.schema.json
@@ -32,5 +32,3 @@ bbafd667fbcf9a849bc6233f27595e060bad46a9f3e1c75f3a1bc4a8b973ae37  plugins/x1-hq/
 d34bc862378e5d8460177cc79a90e27036a355b2fdf3284373b142319f8ed9f9  plugins/x1-hq/skills/publish-menu-online/SKILL.md
 efc35be24523fe6ad2f017c39ca6e1fbfaedd558439e70ddcca515ac11f94aa7  plugins/x1-hq/skills/publish-menu-online/references/capabilities.md
 4bc66fd28bbf079401628dd6f8eda05c58d509b5f54c264251c93ec25236342c  plugins/x1-hq/skills/publish-menu-online/references/online-ordering-model.md
-52a8e4294ec7a7b9882f4364f10401a3a31cf017215e45e201a0a49c4b088202  portable/x1-hq/mcp.json
-82387b87091a218a706b77bea31b5a19369e3446a3ee85b9cc0cd79bf9d13293  portable/x1-hq/plugin.json

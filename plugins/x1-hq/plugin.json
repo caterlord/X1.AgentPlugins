@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "x1-hq",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "description": "Operate and analyze X1 HQ through authenticated, tenant-scoped MCP workflows.",
   "author": {
     "name": "X1"
@@ -13,5 +13,7 @@
     "menu-management",
     "document-import",
     "reporting"
-  ]
+  ],
+  "homepage": "https://github.com/caterlord/X1.AgentPlugins/tree/main/plugins/x1-hq",
+  "repository": "https://github.com/caterlord/X1.AgentPlugins"
 }

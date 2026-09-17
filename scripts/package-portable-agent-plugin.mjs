@@ -1,3 +1,4 @@
+import assert from "node:assert/strict";
 import { createHash } from "node:crypto";
 import { access, cp, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
@@ -5,8 +6,7 @@ import { fileURLToPath } from "node:url";
 
 const scriptDirectory = path.dirname(fileURLToPath(import.meta.url));
 const repositoryRoot = path.resolve(scriptDirectory, "..");
-const workspacePluginRoot = path.join(repositoryRoot, "plugins", "x1-hq");
-const portableManifestRoot = path.join(repositoryRoot, "portable", "x1-hq");
+const pluginRoot = path.join(repositoryRoot, "plugins", "x1-hq");
 const artifactRoot = path.join(repositoryRoot, ".artifacts", "agent-plugin");
 const packageRoot = path.join(artifactRoot, "x1-hq");
 
@@ -30,57 +30,49 @@ const digestFile = async (filePath) => createHash("sha256")
   .update(await readFile(filePath))
   .digest("hex");
 
-const workspaceManifest = await readJson(
-  path.join(workspacePluginRoot, ".codex-plugin", "plugin.json")
+const manifest = await readJson(path.join(pluginRoot, "plugin.json"));
+const mcp = await readJson(path.join(pluginRoot, "mcp.json"));
+const marketplace = await readJson(
+  path.join(repositoryRoot, ".agents", "plugins", "marketplace.json")
 );
-const portableManifest = await readJson(
-  path.join(portableManifestRoot, "plugin.json")
-);
-const appManifest = await readJson(path.join(workspacePluginRoot, ".app.json"));
-const appReference = appManifest.apps?.["x1-hq"];
-
-if (workspaceManifest.name !== portableManifest.name) {
-  throw new Error("Workspace and portable plugin names must match.");
+const entry = marketplace.plugins.find((plugin) => plugin.name === manifest.name);
+assert.equal(entry?.source?.source, "local", "Marketplace must use the local portable package.");
+assert.equal(path.resolve(repositoryRoot, entry.source.path), pluginRoot,
+  "Marketplace must install the same directory as the release artifact.");
+assert.equal(manifest.$schema, "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json");
+assert.equal(manifest.name, "x1-hq");
+assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
+assert.equal(mcp.$schema, "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json");
+assert.deepEqual(mcp.mcpServers, {
+  "x1-hq": { type: "streamable-http", url: "https://mcp.x1.tech/mcp" }
+}, "Public package must connect directly to the X1 MCP gateway without bundled credentials.");
+for (const legacyPath of [".app.json", ".codex-plugin", ".claude-plugin", ".mcp.json"]) {
+  assert.equal(await exists(path.join(pluginRoot, legacyPath)), false,
+    `Portable package must not contain ${legacyPath}.`);
 }
-if (workspaceManifest.version !== portableManifest.version) {
-  throw new Error("Workspace and portable plugin versions must match.");
-}
-if (workspaceManifest.apps !== "./.app.json") {
-  throw new Error("Workspace plugin must reference ./.app.json.");
-}
-if (!appReference?.id?.startsWith("asdk_app_")) {
-  throw new Error("Workspace app reference must use an asdk_app_ identifier.");
-}
-for (const desktopOnlyManifest of ["mcp.json", ".mcp.json", "plugin.json"]) {
-  if (await exists(path.join(workspacePluginRoot, desktopOnlyManifest))) {
-    throw new Error(
-      `Workspace plugin must not contain portable manifest ${desktopOnlyManifest}.`
-    );
-  }
+assert.equal(Object.hasOwn(manifest, "apps"), false,
+  "Portable manifest must not reference registered apps.");
+const skillDirectories = (await readdir(path.join(pluginRoot, "skills"), { withFileTypes: true }))
+  .filter((entry) => entry.isDirectory());
+assert.ok(skillDirectories.length > 0, "Marketplace package must include skills.");
+for (const skill of skillDirectories) {
+  assert.ok(await exists(path.join(pluginRoot, "skills", skill.name, "SKILL.md")),
+    `Skill ${skill.name} is missing SKILL.md.`);
 }
 
 await rm(artifactRoot, { recursive: true, force: true });
 await mkdir(packageRoot, { recursive: true });
 
-for (const entry of ["CHANGELOG.md", "README.md", "evals", "schemas", "skills"]) {
-  await cp(
-    path.join(workspacePluginRoot, entry),
-    path.join(packageRoot, entry),
-    { recursive: true }
-  );
-}
-await cp(
-  path.join(portableManifestRoot, "plugin.json"),
-  path.join(packageRoot, "plugin.json")
-);
-await cp(
-  path.join(portableManifestRoot, "mcp.json"),
-  path.join(packageRoot, "mcp.json")
-);
+await cp(pluginRoot, packageRoot, { recursive: true, dereference: false });
+const sourceFiles = await collectFiles(pluginRoot);
+assert.deepEqual(await collectFiles(packageRoot), sourceFiles,
+  "Release file inventory must match the marketplace package.");
 
 const inventory = [];
 for (const relativePath of await collectFiles(packageRoot)) {
   const digest = await digestFile(path.join(packageRoot, relativePath));
+  assert.equal(digest, await digestFile(path.join(pluginRoot, relativePath)),
+    `Release file differs from marketplace package: ${relativePath}`);
   inventory.push(`${digest}  x1-hq/${relativePath}`);
 }
 
@@ -90,5 +82,5 @@ await writeFile(
   "utf8"
 );
 
-console.log(`Packaged portable Agent Plugin ${portableManifest.version} at ${packageRoot}`);
+console.log(`Packaged portable Agent Plugin ${manifest.version} at ${packageRoot}`);
 console.log(`Wrote ${inventory.length} SHA-256 entries.`);
