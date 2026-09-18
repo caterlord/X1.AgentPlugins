@@ -71,6 +71,18 @@ Copy the returned `toolName` and follow its returned input schema; never guess a
 hidden name or payload. A dispatcher does not weaken the target tool's scope,
 workspace, preview, approval, idempotency, task, readback, or audit rules.
 
+Use `maxResults` between 1 and 10. For broad discovery use `schemaDetail: "summary"`,
+then request `schemaDetail: "input"` with the chosen exact tool name. Reuse the
+schema for this connection; do not rediscover it for each item or approval. If the
+schema rejects input, correct the named constraint instead of repeating the query.
+
+For bulk existing-item modifier mapping, use `preview_menu_changes` with
+`modifierMappings` as described in [menu maintenance](references/menu-maintenance.md).
+Create missing groups/options first; reuse verified IDs and map all selected items
+in one change set. Do not loop `mapToItems` across each group for a large job.
+For running tasks use `get_task_status` with `waitMs: 10000`; a verified terminal
+result is the mapping readback. Use targeted follow-up only for exceptions.
+
 ## Plan by user outcome
 
 Break a multi-part request into an operation ledger before mutating anything:

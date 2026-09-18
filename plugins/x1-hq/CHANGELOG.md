@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.5 — 2026-09-19
+
+- Fix bulk price and availability approval handoff.
+- Map modifier groups to up to 100 existing items in one reviewed change set.
+- Reduce review payloads, repeated tool discovery, and task polling.
+
 ## 0.8.4 — 2026-09-18
 
 - Document the Grok Bot OAuth connection URL and Authenticate recovery flow.

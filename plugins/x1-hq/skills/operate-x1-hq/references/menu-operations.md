@@ -56,3 +56,10 @@ do not describe it as a confirmed audit event.
 If the basis is `unavailable`, say the attribution is unavailable. Never apply
 disabled-item attribution to an enabled item or substitute shop availability,
 price, category, or other records for the item-level modification fields.
+
+For an approved standalone modifier-group preview, use
+`commit_manage_modifier_group` with
+`approvalToken=user_explicitly_approved_final_preview` only when the connected
+schema advertises this handoff. The gateway issues the real token internally.
+Do not send this preview to `approve_and_commit_menu_changes`, ask the customer
+for a token, or invent one. Preserve the preview and idempotency key on retries.

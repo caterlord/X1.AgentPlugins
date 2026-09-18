@@ -104,7 +104,8 @@ generated preview.
    Require the connected tool schema to advertise this handoff; an older gateway
    that rejects it needs the gateway update, not another commit path.
 2. If asynchronous execution is accepted, poll `get_task_status` to a terminal
-   state on the same gateway connection.
+   state on the same gateway connection. Use `waitMs: 10000` when supported,
+   and fetch the terminal result once; avoid rapid polling.
 3. A `partially_committed` result is not success. Report completed and failed
    stages separately, stop dependent writes, and inspect current state before
    proposing recovery.

@@ -92,3 +92,49 @@ is capped at 100 targets/1 MB and review at 10,000 field rows/4 MB. Oversized wo
 fails explicitly; reduce the change set or context rather than treating omitted
 rows as reviewed. These tools update existing catalog identities. Creating or copying
 items/groups/categories keeps its existing focused workflow.
+
+## Focused bulk price and availability tools
+
+Existing `preview_apply_menu_bulk_changes`, `preview_adjust_menu_prices`, and
+`preview_update_menu_availability` previews must use their matching `commit_` tool.
+They cannot be committed by `approve_and_commit_menu_changes`, which accepts only
+`preview_menu_changes`. Use `get_hq_change_preview` to recover the exact commit
+tool and read every page of a saved preview.
+
+After the user approves the complete exact preview, the matching commit tool
+accepts `approvalToken: "user_explicitly_approved_final_preview"` when its discovered
+schema advertises that handoff. Keep one stable idempotency key. The gateway issues
+and consumes the real token internally; never ask the customer for an API token.
+Follow returned task IDs to completion. An approval or scope error is not a reason
+to split a bulk operation into individual writes: resolve the error and preserve
+the original preview/task identity, or create a fresh preview if it expired.
+
+## Bulk mapping existing groups to existing items
+
+Prefer one `preview_menu_changes` request with `modifierMappings`:
+
+```json
+{"brandId":17,"modifierMappings":{"itemIds":[101,102],"groupIds":[201,202],"mode":"add"}}
+```
+
+Use real resolved IDs. At most 100 items and 100 requested groups are accepted.
+`add` preserves existing ordering and appends missing groups in the supplied order.
+`replace` explicitly replaces the complete ordered list; an empty group list clears
+it. Do not combine this form with operations or editSessionId. For heterogeneous
+mapping intentions, use typed set_item_modifiers operations with complete final
+lists, or a separate bulk request per identical intention.
+
+The server batch-reads and freezes current relationships, resolves group names,
+checks a consistent HQ version, and builds one atomic change set. Newly created
+options/groups must be committed and their IDs verified before this step.
+The default compact review lists each named item, its ordered before/after group
+IDs, a group-name dictionary, shared usage and any item flag changes. Read every
+page, including raw exception rows for unexpected/indirect effects. `view: "raw"`
+on get_menu_change_preview exposes the full original audit diff. Switching views
+changes the offset meaning; keep a single view while paging. No-change previews
+need no commit. Approval uses the normal approve_and_commit_menu_changes flow.
+
+Use `includeOperationSchema: false` on repeated get_menu_edit_context calls once
+the schema is known. For task progress use `waitMs: 10000`; `includeResult: false`
+omits large results, so fetch the terminal result once to verify all outcomes.
+Do not re-run full menu diagnostics after the task already verified the mapping.
