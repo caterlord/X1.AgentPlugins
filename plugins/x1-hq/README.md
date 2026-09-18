@@ -42,7 +42,8 @@ reinstall this plugin.
   HTTPS servers; this package does not provide ChatGPT web support.
 - An X1 HQ user account with access to at least one workspace.
 
-See the repository-level README for installation instructions.
+See [the installation guide](INSTALLATION.md) for platform-specific commands,
+including Grok Build and Grok Bot.
 
 ## Capability availability
 

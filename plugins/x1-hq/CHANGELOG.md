@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.3 — 2026-09-18
+
+- Document vendor-neutral installation across supported plugin clients.
+- Add Grok Build commands, Grok Bot routes, and explicit verification limits.
+
 ## 0.8.2 — 2026-09-17
 
 - Include item and category breakdowns in detailed sales reports.

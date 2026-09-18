@@ -1,4 +1,4 @@
-# X1 Agent Plugins
+# X1 HQ installation guide
 
 Official vendor-neutral X1 agent plugins for operating and reporting on X1 HQ.
 The complete package uses Agent Plugins 1.0.0, shared Agent Skills, and a direct
@@ -9,7 +9,7 @@ depends on which package formats and connection methods your client supports.
 
 | Client capability | Installation path | What is loaded |
 | --- | --- | --- |
-| Agent Plugins 1.0.0 package loading | Load [`plugins/x1-hq`](plugins/x1-hq), or the portable artifact from a published release | Plugin metadata, shared skills, and MCP configuration |
+| Agent Plugins 1.0.0 package loading | Load [`plugins/x1-hq`](https://github.com/caterlord/X1.AgentPlugins/tree/main/plugins/x1-hq), or the portable artifact from a published release | Plugin metadata, shared skills, and MCP configuration |
 | Compatible Git marketplace import | Add this repository and select **X1 HQ** | The same complete package, subject to the client's importer support |
 | Remote MCP with Streamable HTTP and OAuth | Add `https://mcp.x1.tech/mcp` as an MCP connection and complete X1 sign-in | Live gateway tools; bundled skills are not automatically installed |
 
@@ -233,90 +233,3 @@ The assistant should use `bootstrap_hq_workspace` to resolve your authorized
 scope. If tools are available but the skills are absent, revisit the plugin
 installation; adding the MCP URL alone loads only the connection.
 
-## Available plugin
-
-### X1 HQ
-
-X1 HQ is the conversational operating and reporting surface for X1 merchants.
-It helps an assistant resolve workspace and shop scope, inspect menus and device
-settings, analyze reports, prepare previews, request genuine approvals, verify
-outcomes, and return one consolidated operational report.
-
-The production gateway supports governed menu imports, menu maintenance, and
-online ordering publication and photos. The gateway is the authority for every
-capability.
-Authentication, delegated scopes, user permissions, workspace scope, approval
-requirements, audit rules, quotas, feature flags, and circuit breakers are all
-enforced server-side.
-
-See [`plugins/x1-hq`](plugins/x1-hq) for the complete Agent Plugins 1.0.0
-package, shared skills, capability references, and evaluation cases. Both the
-marketplace and portable release artifact use this directory.
-
-## Keep the plugin up to date
-
-For portable installations, load the updated package through your client's
-documented update mechanism. For direct MCP connections, the gateway supplies
-the current tool catalog; reconnect or refresh tools as your client requires.
-Separately loaded skills must also be updated when their package changes.
-
-### Codex marketplace updates
-
-This repository is an X1-operated public Git marketplace; it is not an OpenAI
-marketplace listing. Codex does not expose a per-plugin **Refresh** button. To
-pick up a release from the tracked Git branch, refresh the marketplace snapshot
-and reinstall the plugin from that snapshot:
-
-```sh
-codex plugin marketplace upgrade x1-plugins
-codex plugin add x1-hq@x1-plugins
-```
-
-Then start a new Codex task. Existing tasks keep the plugin skills and tool
-schemas they loaded when the task began.
-
-A marketplace added with `--ref` remains pinned to that Git ref. Moving a
-pinned installation to another release is an explicit administrator or user
-action; changing files on `main` does not move the pin.
-
-The Git marketplace distributes the portable manifests and skills. The MCP
-configuration points directly to the X1 gateway, which owns live tool metadata
-and authentication. Client policies and OAuth consent still apply.
-
-### Migrate an existing app-dependent installation
-
-For version 0.8.1 or later, refresh the marketplace and reinstall
-**X1 HQ**, then start a new task. Complete MCP OAuth sign-in if prompted; the
-previous registered-app connection may not transfer to the direct MCP client.
-For workspace-managed imports, ask the administrator to sync the marketplace.
-Pinned installations must move to a release containing this fix.
-
-If a connection dialog still names `asdk_app_…`, check that the installed package
-is the updated version and that the marketplace is not pinned to `v0.8.0` or
-older. The portable package contains no `.app.json` reference.
-
-## Validate and package
-
-Run `node scripts/package-portable-agent-plugin.mjs`. It checks that the
-marketplace resolves to the complete portable package, rejects app-dependent
-wrappers, verifies the MCP endpoint and skills, then copies the package to
-`.artifacts/agent-plugin/x1-hq` and writes artifact checksums. Before publishing,
-verify installation and OAuth sign-in in a fresh supported client session.
-
-## Security and privacy
-
-- Never paste passwords, access tokens, API keys, or authorization codes into a
-  chat or issue.
-- The plugin does not bundle X1 credentials.
-- The assistant can access only data allowed by the signed-in X1 HQ account and
-  selected workspace.
-- To disconnect access, remove the X1 connection in your client and revoke it
-  from your X1 account when available.
-
-Please follow [SECURITY.md](SECURITY.md) when reporting a vulnerability.
-
-## Source and licensing
-
-This repository is public so users can inspect and install the plugin package.
-No open-source license has been granted yet; unless a file states otherwise,
-all rights are reserved by X1.
