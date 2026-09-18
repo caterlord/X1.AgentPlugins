@@ -181,7 +181,7 @@ suggested setup prompt is:
 > Set up X1 HQ from https://github.com/caterlord/X1.AgentPlugins. The complete
 > Agent Plugins package is in plugins/x1-hq. Try your supported full-plugin
 > installation route first. If that is unavailable, connect
-> https://mcp.x1.tech/mcp through MCP OAuth, read the five SKILL.md files and
+> https://mcp.x1.tech/mcp?auth=required through MCP OAuth, read the five SKILL.md files and
 > their referenced resources under plugins/x1-hq/skills, and save those workflows
 > using your supported skill mechanism. Preserve their approval and workspace
 > rules. Report which skills and connection actually loaded, and any resources
@@ -192,8 +192,18 @@ documents asking a Bot to save a skill, selecting it with `/`, and enabling
 missing private skills under **Settings → Plugins → Yours**. Check the saved
 X1 workflows there. This is a guided adaptation using Grok's saved skills, not
 proof of native package import or automatic preservation of referenced files.
-Full X1 package import, OAuth, and workflow behavior in Grok Bot remain subject
-to live verification.
+**OAuth connection recovery:** Use `https://mcp.x1.tech/mcp?auth=required`
+for Grok Bot. This asks X1 to challenge during connection so Grok can discover
+and start OAuth. If an existing connection reports `no_auth_link`, update that
+connection to this URL, then open **Your plugins → X1 HQ → Authenticate**.
+Complete browser sign-in and verify the connection with `get_mcp_gateway_status`.
+An **Added** card alone does not verify authentication. Do not add static tokens.
+
+On 2026-09-18, the equivalent staging connection completed browser OAuth,
+discovered 87 tools, and successfully called `get_mcp_gateway_status` in Grok Bot.
+The same gateway fix is deployed to production. Full package import and business
+workflow certification remain separate checks. Other clients can retain the
+default `/mcp` URL; both routes use the same account authorization and scopes.
 
 ### ChatGPT desktop
 

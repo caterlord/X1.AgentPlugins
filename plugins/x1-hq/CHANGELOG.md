@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.4 — 2026-09-18
+
+- Document the Grok Bot OAuth connection URL and Authenticate recovery flow.
+- Record verified staging OAuth, tool discovery, and safe status read.
+
 ## 0.8.3 — 2026-09-18
 
 - Document vendor-neutral installation across supported plugin clients.
