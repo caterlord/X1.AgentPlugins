@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.6 — 2026-09-22
+
+- Whole-menu name edits use one atomic change set.
+- Bulk price, availability, category and modifier workflows use bounded batches.
+- Clarify verified completion and recovery of uncertain results; existing saved previews keep their original execution behavior.
+
 ## 0.8.5 — 2026-09-19
 
 - Fix bulk price and availability approval handoff.

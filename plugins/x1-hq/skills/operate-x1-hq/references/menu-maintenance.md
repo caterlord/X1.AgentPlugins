@@ -32,8 +32,8 @@ exact named tools with `find_hq_tools` if deferred, and keep the same gateway.
    The tool handles its internal token and returns a task. Use `get_task_status`
    until terminal; a task marked succeeded can still contain `needs-review` results.
 6. Report each outcome: `verified`, `no-change`, `committed-unverified`,
-   `needs-review`, or `not-run`. Name-only execution can partially succeed.
-   A change set containing any wider operation applies atomically in HQ; a lost
+   `needs-review`, or `not-run`. All new change sets, including name-only edits, apply atomically in HQ.
+   Previously saved legacy previews can still partially succeed. A lost
    response can still leave its outcome unverified. Recover an interrupted task with its original identity;
    never choose a new key to evade an uncertain outcome. A completed task with an
    uncertain write needs authoritative readback and a fresh correction preview.
@@ -138,3 +138,16 @@ Use `includeOperationSchema: false` on repeated get_menu_edit_context calls once
 the schema is known. For task progress use `waitMs: 10000`; `includeResult: false`
 omits large results, so fetch the terminal result once to verify all outcomes.
 Do not re-run full menu diagnostics after the task already verified the mapping.
+
+## Bulk execution and verification
+
+Use one `preview_menu_changes` for existing-record edits, including names; do not
+loop item previews or inject a dummy metadata edit to obtain atomic execution.
+Name context is fetched in batches. Reuse schemas and request
+`includeOperationSchema: false` after learning them. Price adjustments, availability,
+category moves, and existing modifier-group authoring also batch their item edits.
+Review every returned effect, including any shop defaults and relationship cleanup.
+Collection reorder steps and import creation dependencies are separately disclosed
+when combined with atomic edits. A terminal result explicitly marked verified is
+sufficient readback; inspect only exceptions. `running` alone does not establish
+healthy progress, and slow execution is never permission to resubmit.
