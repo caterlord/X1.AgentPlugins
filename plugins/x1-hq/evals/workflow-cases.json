@@ -197,6 +197,8 @@
       "prompt": "Add a printer to Shop A, raise coffee prices at Shop B, and create a POS user for both shops.",
       "expectedTools": [
         "get_device_settings_snapshot",
+        "preview_create_printer",
+        "commit_create_printer",
         "preview_adjust_menu_prices",
         "commit_adjust_menu_prices"
       ],
@@ -209,6 +211,25 @@
         "partial-results",
         "readback-verification",
         "staff-pii-minimization"
+      ]
+    },
+    {
+      "id": "create-kitchen-printers",
+      "skill": "operate-x1-hq",
+      "prompt": "Create two Kitchen Printers named K1 and W1 at Shop A, then route food to K1 and drinks to W1.",
+      "expectedTools": [
+        "get_device_settings_snapshot",
+        "preview_create_printer",
+        "commit_create_printer",
+        "preview_menu_changes",
+        "approve_and_commit_menu_changes"
+      ],
+      "invariants": [
+        "read-before-write",
+        "preview-before-commit",
+        "explicit-approval",
+        "idempotency",
+        "readback-verification"
       ]
     },
     {

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.7 — 2026-09-30
+
+- Add approval-backed creation of shop printers, including kitchen printer type,
+  order channels, redirects, and readback before menu routing.
+- Document printer routing through the existing menu change tools.
+
 ## 0.8.6 — 2026-09-22
 
 - Whole-menu name edits use one atomic change set.

@@ -8,13 +8,19 @@ Current MCP capability, not the X1 HQ web UI, determines what can be automated.
 - Inspect online-ordering health and update supported online-ordering settings
   through their preview and commit pair.
 - Rename an existing cash drawer through its preview and commit pair.
+- Create one printer through `preview_create_printer` and
+  `commit_create_printer`. Read the shop's current printer list first. Use
+  `printerType: "printer"` for a Kitchen Printer; `"kds"` is a kitchen display
+  screen and `"label"` is a label printer. Review dine-in, takeaway, and
+  redirect settings, then read back the new printer ID before assigning menu
+  item routes. Create multiple printers as separate previews and commits.
 
 ## Read-only or unavailable capability
 
 - Store settings without an advertised preview and commit pair are inspection
   only.
-- Printers and terminals can currently be inspected, but creating or configuring
-  them is not an advertised mutation capability.
+- Terminals can currently be inspected. Printer updates and removal, and
+  terminal creation and configuration, are not advertised mutation capabilities.
 - POS user onboarding, role assignment, permission changes, and shop assignment
   are not currently advertised capabilities.
 
