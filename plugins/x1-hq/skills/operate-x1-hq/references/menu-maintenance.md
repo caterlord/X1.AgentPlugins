@@ -101,6 +101,12 @@ They cannot be committed by `approve_and_commit_menu_changes`, which accepts onl
 `preview_menu_changes`. Use `get_hq_change_preview` to recover the exact commit
 tool and read every page of a saved preview.
 
+Printer routing can be previewed with `preview_update_menu_availability` using
+`shopPrinter1` through `shopPrinter5`, or with `preview_menu_changes` using
+`printer1` through `printer5`. Use the IDs returned after each approved printer
+creation. Route only the intended shop's existing items, and review food and
+drink matches before committing. Modifier items cannot own printer routes.
+
 After the user approves the complete exact preview, the matching commit tool
 accepts `approvalToken: "user_explicitly_approved_final_preview"` when its discovered
 schema advertises that handoff. Keep one stable idempotency key. The gateway issues

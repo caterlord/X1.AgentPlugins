@@ -25,6 +25,10 @@ context, and make the final state easy to verify.
 - Do not infer unsupported capabilities from the web application's UI.
 - Read [references/capabilities.md](references/capabilities.md) when choosing
   tools or checking whether an operation is currently supported.
+- For printer creation, follow
+  [references/settings-devices-and-access.md](references/settings-devices-and-access.md)
+  and the connected gateway's `preview_create_printer` and
+  `commit_create_printer` schemas when advertised.
 
 ## Start every connection safely
 
