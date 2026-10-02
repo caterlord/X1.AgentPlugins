@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.8 — 2026-10-02
+
+- Move the authenticated MCP connection to `https://mcp.posx1.ai/mcp`
+  after the `x1.tech` domain cancellation.
+- Update installation and connection-recovery instructions for the new address.
+
 ## 0.8.7 — 2026-09-30
 
 - Add approval-backed creation of shop printers, including kitchen printer type,

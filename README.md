@@ -11,7 +11,7 @@ depends on which package formats and connection methods your client supports.
 | --- | --- | --- |
 | Agent Plugins 1.0.0 package loading | Load [`plugins/x1-hq`](plugins/x1-hq), or the portable artifact from a published release | Plugin metadata, shared skills, and MCP configuration |
 | Compatible Git marketplace import | Add this repository and select **X1 HQ** | The same complete package, subject to the client's importer support |
-| Remote MCP with Streamable HTTP and OAuth | Add `https://mcp.x1.tech/mcp` as an MCP connection and complete X1 sign-in | Live gateway tools; bundled skills are not automatically installed |
+| Remote MCP with Streamable HTTP and OAuth | Add `https://mcp.posx1.ai/mcp` as an MCP connection and complete X1 sign-in | Live gateway tools; bundled skills are not automatically installed |
 
 For a full plugin installation, the client must load the package's `plugin.json`,
 `mcp.json`, and `skills/`. A successful MCP connection alone does not demonstrate
@@ -135,7 +135,7 @@ grok plugin install ./X1.AgentPlugins/plugins/x1-hq --trust
 ```
 
 Start a new Grok Build session, then check `/skills` and `/mcps`. Confirm the
-X1 skills and the connection to `https://mcp.x1.tech/mcp` are present, complete
+X1 skills and the connection to `https://mcp.posx1.ai/mcp` are present, complete
 OAuth, and request a read-only workspace lookup. `--trust` enables the plugin's
 components; omitting it displays the source for review without completing the
 installation. Update an installed package with `grok plugin update x1-hq`.
@@ -181,7 +181,7 @@ suggested setup prompt is:
 > Set up X1 HQ from https://github.com/caterlord/X1.AgentPlugins. The complete
 > Agent Plugins package is in plugins/x1-hq. Try your supported full-plugin
 > installation route first. If that is unavailable, connect
-> https://mcp.x1.tech/mcp?auth=required through MCP OAuth, read the five SKILL.md files and
+> https://mcp.posx1.ai/mcp?auth=required through MCP OAuth, read the five SKILL.md files and
 > their referenced resources under plugins/x1-hq/skills, and save those workflows
 > using your supported skill mechanism. Preserve their approval and workspace
 > rules. Report which skills and connection actually loaded, and any resources
@@ -192,7 +192,7 @@ documents asking a Bot to save a skill, selecting it with `/`, and enabling
 missing private skills under **Settings → Plugins → Yours**. Check the saved
 X1 workflows there. This is a guided adaptation using Grok's saved skills, not
 proof of native package import or automatic preservation of referenced files.
-**OAuth connection recovery:** Use `https://mcp.x1.tech/mcp?auth=required`
+**OAuth connection recovery:** Use `https://mcp.posx1.ai/mcp?auth=required`
 for Grok Bot. This asks X1 to challenge during connection so Grok can discover
 and start OAuth. If an existing connection reports `no_auth_link`, update that
 connection to this URL, then open **Your plugins → X1 HQ → Authenticate**.
@@ -209,7 +209,7 @@ default `/mcp` URL; both routes use the same account authorization and scopes.
 
 Add `https://github.com/caterlord/X1.AgentPlugins` as a self-hosted marketplace
 and install **X1 HQ**. The marketplace installs a portable package that connects
-directly to `https://mcp.x1.tech/mcp`. Complete X1 sign-in through the client’s
+directly to `https://mcp.posx1.ai/mcp`. Complete X1 sign-in through the client’s
 MCP OAuth flow; no X1 development ChatGPT app is required.
 
 OpenAI currently marks imported plugins that declare MCP servers as
