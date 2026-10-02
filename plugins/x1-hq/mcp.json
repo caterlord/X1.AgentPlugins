@@ -3,7 +3,7 @@
   "mcpServers": {
     "x1-hq": {
       "type": "streamable-http",
-      "url": "https://mcp.x1.tech/mcp"
+      "url": "https://mcp.posx1.ai/mcp"
     }
   }
 }

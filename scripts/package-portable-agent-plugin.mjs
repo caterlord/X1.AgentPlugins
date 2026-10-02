@@ -44,7 +44,7 @@ assert.equal(manifest.name, "x1-hq");
 assert.match(manifest.version, /^\d+\.\d+\.\d+$/);
 assert.equal(mcp.$schema, "https://agent-plugins.org/schemas/1.0.0/mcp.schema.json");
 assert.deepEqual(mcp.mcpServers, {
-  "x1-hq": { type: "streamable-http", url: "https://mcp.x1.tech/mcp" }
+  "x1-hq": { type: "streamable-http", url: "https://mcp.posx1.ai/mcp" }
 }, "Public package must connect directly to the X1 MCP gateway without bundled credentials.");
 for (const legacyPath of [".app.json", ".codex-plugin", ".claude-plugin", ".mcp.json"]) {
   assert.equal(await exists(path.join(pluginRoot, legacyPath)), false,
