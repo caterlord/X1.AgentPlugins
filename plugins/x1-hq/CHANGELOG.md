@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.10 — 2026-10-21
+
+- Require the connected gateway to advertise printer creation tools before planning an approved printer creation.
+- Keep printer updates, removal and terminal changes unavailable unless their own mutation tools are advertised.
+- Retain one approved preview and commit per printer, with readback before assigning menu routes.
+
 ## 0.8.9 — 2026-10-21
 
 - Bind every skill to the package’s direct MCP connection, including deferred-tool discovery.
