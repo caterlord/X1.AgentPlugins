@@ -1,9 +1,9 @@
-a5dbeea992ae1738385579317a68c521e2776f786ed7dfb897f117f3d3985384  plugins/x1-hq/CHANGELOG.md
+f312dad8c9f4d428246aafe81eee8c7e002038ad6892e0dfcc19db99d27ecd13  plugins/x1-hq/CHANGELOG.md
 bf57a531cb4af336be83e7bed0787bf64ed8b2e76b13f102d6388d034c81e974  plugins/x1-hq/INSTALLATION.md
-b31b9985ca64f6394f4fd595036f149fe6e54c71fd0553d9af20302259c8d5cc  plugins/x1-hq/README.md
+1fc19f89667ffd8c3537347644e24d2a39aa53ea4936da5023a0635167471c11  plugins/x1-hq/README.md
 8d65e170d52151a63008a8211ab0bc4f80382fa7732840226e02eba2333e3e18  plugins/x1-hq/evals/workflow-cases.json
 02c0613f6a67fb581f42723ef0869de07a1093ef422dd7f7ecb88e6c0e82f438  plugins/x1-hq/mcp.json
-5e7228b7201dde3e2545ca299d1dcc5929092e6ea79225ecf80807075544d369  plugins/x1-hq/plugin.json
+19d128dd993f82f4dda9df97c881d6c58db4a35f62961ecb411f81dce16055e3  plugins/x1-hq/plugin.json
 02b19604f9b7b6b3f2949b4fd2af3ec6436403357be3b5a0c17979da587a0af8  plugins/x1-hq/schemas/README.md
 4c357db0e4359280ce055b98bf167fca548bed3a8992391d4ecff64276e3e6c7  plugins/x1-hq/schemas/mcp.schema.json
 cc65b53b668db7038f8ce1473c00f41740303ea0a0ec3e2c694e63cb51bfe0a2  plugins/x1-hq/schemas/plugin.schema.json
@@ -28,7 +28,7 @@ aca2c63a3f985da87a6041fb59a08f7774b3c1b10c8614fb1d33ff0ea5241163  plugins/x1-hq/
 f4f7c1bb2e0ec610d82713e0251333d0298caf8aae2a0eb970fb0e150880e83d  plugins/x1-hq/skills/operate-x1-hq/references/multi-operation-confirmation.md
 b620f261b663221ce613e1ecec9b97f7634184f1101ef8b623da5562b216ef71  plugins/x1-hq/skills/operate-x1-hq/references/promotion-rules.md
 229e4fe0a6bf06acf4ff14cc5775a09d36ffa3786b8691e7d538a955b22cad94  plugins/x1-hq/skills/operate-x1-hq/references/response-patterns.md
-b95a6e1085e4f0b36baf50d34ddf109b893fc636e7aeef565beaccf20f11827d  plugins/x1-hq/skills/operate-x1-hq/references/settings-devices-and-access.md
+47f1e83e11b53800810cf95238274e32293718fc5b9d08f550d0cc1b3c700e84  plugins/x1-hq/skills/operate-x1-hq/references/settings-devices-and-access.md
 bbafd667fbcf9a849bc6233f27595e060bad46a9f3e1c75f3a1bc4a8b973ae37  plugins/x1-hq/skills/operate-x1-hq/references/workspace-and-scope.md
 51ec7f35f5e17118ade66342a14b0a0c83896424ec6d6aeff05d66cfb1aad94f  plugins/x1-hq/skills/publish-menu-online/SKILL.md
 5542168bb064b738f24369cbdb13ba5296293ffa5f48e2b0818de8595de323c1  plugins/x1-hq/skills/publish-menu-online/references/capabilities.md

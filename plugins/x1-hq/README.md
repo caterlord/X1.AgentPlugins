@@ -63,6 +63,12 @@ The marketplace installs this complete directory, including `plugin.json`,
 `node scripts/package-portable-agent-plugin.mjs`. Keep app references and native
 wrappers out of this directory so all clients use the direct MCP connection.
 
+## Version 0.8.10
+
+Conditions printer creation and other device changes on the mutation tools
+advertised by the connected gateway. Each printer requires its own approved
+preview and commit, followed by readback before menu routing.
+
 ## Version 0.8.9
 
 Binds skill calls to the packaged direct MCP server and documents recovery for
