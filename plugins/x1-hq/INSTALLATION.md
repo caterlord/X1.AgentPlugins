@@ -234,6 +234,36 @@ For a reproducible installation, add `--ref <published-release-tag>` to the
 marketplace command. Releases through `v0.8.0` use the previous app-dependent
 package; choose a published release containing the portable installation fix.
 
+### Recover after a domain change or missing tools
+
+If an existing Codex installation still tries to sign in through `x1.tech`,
+refresh the marketplace and installed package, then renew the direct MCP login:
+
+```sh
+codex plugin marketplace upgrade x1-plugins
+codex plugin add x1-hq@x1-plugins
+codex mcp login x1-hq
+```
+
+Complete browser sign-in and start a new task. Reinstalling package files alone
+does not establish that a saved OAuth connection has been renewed.
+
+If the direct server is authenticated but its tools are absent from the task,
+register the same production endpoint explicitly in Codex:
+
+```sh
+codex mcp add x1-hq --url https://mcp.posx1.ai/mcp
+```
+
+Complete sign-in if prompted and start a new task. Verify the direct `x1-hq`
+server's gateway status and workspace discovery. The separate X1 HQ Agent app
+connector has its own connection; its error does not diagnose this direct MCP
+server. Do not substitute a staging endpoint or static bearer token.
+
+The explicit-registration recovery was verified in Codex with an equivalent
+staging connection. Verify it against the production endpoint in your client;
+other clients should use their documented MCP connection controls.
+
 ### Verify the complete installation
 
 In a new session, confirm the client loaded X1 HQ's skills (for example,

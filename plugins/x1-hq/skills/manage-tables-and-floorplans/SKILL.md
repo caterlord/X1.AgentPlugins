@@ -15,6 +15,19 @@ schemas. See [references/capabilities.md](references/capabilities.md) for tool
 coverage. A skill update does not make tools available on an older gateway;
 report missing capabilities without using raw APIs or browser writes to bypass them.
 
+## Connection binding
+
+Use the direct MCP server `x1-hq` at `https://mcp.posx1.ai/mcp` for this
+package. Keep status, discovery, workspace, and business calls on that server.
+The **X1 HQ Agent** app connector (`codex_apps/x1_hq_agent`) is a separate
+connection. Do not substitute its tools or tools from another X1 environment
+when a packaged-server tool is deferred.
+
+If a tool is deferred, discover it through this server's `find_hq_tools` and
+use its matching dispatcher. If the task exposes no tools from this server,
+report that specific tooling limitation. An error from another connector does
+not establish that this gateway is unavailable.
+
 ## Read and identify
 
 Read the target shop's table context before planning changes. It includes parent

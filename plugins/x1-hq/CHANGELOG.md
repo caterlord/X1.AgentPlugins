@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.9 — 2026-10-21
+
+- Bind every skill to the package’s direct MCP connection, including deferred-tool discovery.
+- Document OAuth renewal after the domain change and explicit Codex MCP registration when tools are absent.
+- Generate the local development package from the same production source to prevent skill and version drift.
+
 ## 0.8.8 — 2026-10-02
 
 - Move the authenticated MCP connection to `https://mcp.posx1.ai/mcp`

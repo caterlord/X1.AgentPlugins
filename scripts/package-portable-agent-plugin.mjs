@@ -58,6 +58,11 @@ assert.ok(skillDirectories.length > 0, "Marketplace package must include skills.
 for (const skill of skillDirectories) {
   assert.ok(await exists(path.join(pluginRoot, "skills", skill.name, "SKILL.md")),
     `Skill ${skill.name} is missing SKILL.md.`);
+  const instructions = await readFile(path.join(pluginRoot, "skills", skill.name, "SKILL.md"), "utf8");
+  assert.ok(instructions.includes("`x1-hq`") && instructions.includes("https://mcp.posx1.ai/mcp"),
+    `Skill ${skill.name} must identify the packaged production MCP connection.`);
+  assert.equal(instructions.includes("https://x1hq-mcp-staging.azurewebsites.net/mcp"), false,
+    `Production skill ${skill.name} must not bind to staging.`);
 }
 
 await rm(artifactRoot, { recursive: true, force: true });
