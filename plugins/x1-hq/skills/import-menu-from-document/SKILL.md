@@ -27,6 +27,19 @@ do not rediscover the same successful action before every call. Keep the whole
 workflow on the same connected X1 HQ gateway instance—do not mix a plugin MCP
 server with an identically named app/connector mid-session.
 
+## Connection binding
+
+Use the direct MCP server `x1-hq` at `https://mcp.posx1.ai/mcp` for this
+package. Keep status, discovery, workspace, and business calls on that server.
+The **X1 HQ Agent** app connector (`codex_apps/x1_hq_agent`) is a separate
+connection. Do not substitute its tools or tools from another X1 environment
+when a packaged-server tool is deferred.
+
+If a tool is deferred, discover it through this server's `find_hq_tools` and
+use its matching dispatcher. If the task exposes no tools from this server,
+report that specific tooling limitation. An error from another connector does
+not establish that this gateway is unavailable.
+
 ## Establish the target and contract
 
 1. Call `bootstrap_hq_workspace` with the company, brand, or shop names supplied

@@ -63,6 +63,11 @@ The marketplace installs this complete directory, including `plugin.json`,
 `node scripts/package-portable-agent-plugin.mjs`. Keep app references and native
 wrappers out of this directory so all clients use the direct MCP connection.
 
+## Version 0.8.9
+
+Binds skill calls to the packaged direct MCP server and documents recovery for
+saved OAuth connections and missing tools after the domain migration.
+
 ## Version 0.8.1
 
 Removes the development ChatGPT app dependency from marketplace installation.
