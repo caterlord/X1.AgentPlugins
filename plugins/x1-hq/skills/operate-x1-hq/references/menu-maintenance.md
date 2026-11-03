@@ -67,7 +67,8 @@ Mix name operations and these typed operations in one `preview_menu_changes` cal
 | `set_metadata` | Explicit field `set`/`clear`: category parent/style/visibility/enabled; item category/department/style/descriptions/serving size/preparation seconds/order-type flags/kitchen checklist/enabled; group selection limits/visibility/enabled. Only fields advertised for the target are accepted. |
 | `set_price` | Item target + shopId + absolute price, nonnegative with up to two decimals. Missing shop details require this explicit price. |
 | `set_availability` | Item + shopId, explicit enabled/outOfStock/limited/quantity/soldCount changes. Quantity/count require limited availability; turning it off resets them, shown in review. |
-| `set_group_price` | Group + member itemId + shopId; absolute price or explicit null to disable the override. |
+| `set_item_set_price` | Item + shopId; shared default Set Price across groups at that shop. Absolute price or explicit null to clear the default; group-specific overrides take priority. |
+| `set_group_price` | Group + member itemId + shopId; price for this group only, or explicit null to disable its override and fall back to item Set Price/regular price. |
 | `set_modifier_members` | Complete ordered members array of `{itemId, enabled}`. Removing members also removes their shop overrides. Shared parent usage is shown. |
 | `set_item_modifiers` | Item + complete ordered groupIds. |
 | `set_meal_set_groups` | Compatible item + complete ordered meal-set groupIds. |
@@ -100,6 +101,30 @@ is capped at 100 targets/1 MB and review at 10,000 field rows/4 MB. Oversized wo
 fails explicitly; reduce the change set or context rather than treating omitted
 rows as reviewed. These tools update existing catalog identities. Creating or copying
 items/groups/categories keeps its existing focused workflow.
+
+## Item Set Price and group-specific prices
+
+Choose the scope from the user's request before previewing a price change:
+
+- **Item Set Price** is the default for this item across all groups at the selected shop. Use `set_item_set_price` with an `item` target, `shopId` and `price`. It writes the same setting as item `Shop Settings` -> `Additional Settings` -> `Set Price`. Do not loop over groups or change the regular selling price.
+- **Group-specific price** applies only to this member item in one selected group at that shop. Use `set_group_price` with a `modifier_group` target, the member `itemId`, `shopId` and `price`. It leaves the item's shared Set Price and every other group unchanged.
+- **Regular price** uses `set_price`. It is a separate setting from both prices above.
+
+At each shop, the active group-specific price takes priority, followed by the item's Set Price, then its regular price. `0` is a valid price. For `set_item_set_price`, `price: null` clears the shared default and restores regular-price fallback. For `set_group_price`, `price: null` disables only that group's override and restores item Set Price/regular-price fallback.
+
+Read `get_menu_edit_context` with `includeExtended: true` and the selected `shopId`. Require `capabilities.operations` to advertise `set_item_set_price` before using it. The `pricing` context shows the regular price, shared Set Price, active group overrides and precedence. Existing group overrides remain exceptions when changing the shared default; show them in the review. If the user explicitly wants one price in every group without exceptions, include explicit clears of those group overrides in the same approved preview. Do not silently remove overrides. If the requested scope is unclear, ask whether the user means all groups at this shop or one named group.
+
+Example operation shapes (resolve the actual IDs before use):
+
+```json
+{"operationId":"shared-set-price","kind":"set_item_set_price","target":{"entityType":"item","entityId":101,"shopId":4},"price":5}
+```
+
+```json
+{"operationId":"one-group-price","kind":"set_group_price","target":{"entityType":"modifier_group","entityId":501,"itemId":101,"shopId":4},"price":2}
+```
+
+Put related item and group price operations in one `preview_menu_changes` request. State the item, shop, scope, before/after values and retained group exceptions before asking for approval. Follow the ordinary approval, idempotency, task and readback flow. Repeat an item Set Price operation per explicitly selected shop; it does not affect every shop in the brand automatically.
 
 ## Focused bulk price and availability tools
 

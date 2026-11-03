@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.12 — Item Set Price scope
+
+- Add item Set Price guidance and operation for a shared default across groups at one shop.
+- Distinguish group-specific overrides, regular prices, zero and clearing; show existing exceptions before approval.
+- Require the matching API capability. Runtime API/gateway deployment is separate from the plugin package.
+
 ## 0.8.11 — 2026-11-03
 
 - Support Kitchen Checklist edits for existing items through the normal preview, approval and verified bulk-update flow.

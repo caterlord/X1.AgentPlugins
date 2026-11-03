@@ -136,6 +136,12 @@ the connected gateway capabilities before choosing fields. Request
 `get_menu_edit_context` with `includeExtended: true` for wider edits, and prefer one
 `preview_menu_changes` change set for related changes to existing records.
 
+For meal-set pricing, distinguish item **Set Price** (the shared default across
+groups at one shop) from a **group-specific price** (one group only). Group-specific
+prices take priority. Follow the pricing section in
+[references/menu-maintenance.md](references/menu-maintenance.md#item-set-price-and-group-specific-prices)
+and require the connected API to advertise the operation.
+
 ## Promotions and lunch drink benefits
 
 For mandatory/optional promo rules, included drinks, fixed-price add-ons, or
