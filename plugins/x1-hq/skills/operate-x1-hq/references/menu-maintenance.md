@@ -64,7 +64,7 @@ Mix name operations and these typed operations in one `preview_menu_changes` cal
 
 | Kind | Intent |
 | --- | --- |
-| `set_metadata` | Explicit field `set`/`clear`: category parent/style/visibility/enabled; item category/department/style/descriptions/serving size/preparation seconds/order-type flags/enabled; group selection limits/visibility/enabled. Only fields advertised for the target are accepted. |
+| `set_metadata` | Explicit field `set`/`clear`: category parent/style/visibility/enabled; item category/department/style/descriptions/serving size/preparation seconds/order-type flags/kitchen checklist/enabled; group selection limits/visibility/enabled. Only fields advertised for the target are accepted. |
 | `set_price` | Item target + shopId + absolute price, nonnegative with up to two decimals. Missing shop details require this explicit price. |
 | `set_availability` | Item + shopId, explicit enabled/outOfStock/limited/quantity/soldCount changes. Quantity/count require limited availability; turning it off resets them, shown in review. |
 | `set_group_price` | Group + member itemId + shopId; absolute price or explicit null to disable the override. |
@@ -74,6 +74,14 @@ Mix name operations and these typed operations in one `preview_menu_changes` cal
 | `set_classification` | Item classification: standard, modifier, set_item, or standalone_and_set. Review printer and relationship cleanup before approval. |
 | `reorder_items` | Category target + every final member item ID in orderedIds, including disabled items. |
 | `reorder_categories` | One sibling category target + every editable final sibling ID in orderedIds, including disabled categories. Omit reserved promotional categories; their order is preserved. Category display order applies wherever those categories appear. |
+
+For Kitchen Checklist printing, use item `set_metadata` with
+`changes.kitchenChecklist: {action: "set", value: true}` to enable it or `false`
+to disable it. This is the existing `IsItemShowInKitchenChecklist` item field,
+separate from kitchen names and shop printer routing. `clear` restores its blank
+value. Read `get_menu_edit_context` with `includeExtended: true` and require the
+returned `metadataFields.kitchenChecklist` capability before previewing. For many
+items, put all selected item operations in one preview and review every change.
 
 Collection arrays replace the selected collection; an empty array explicitly clears
 it where valid. Do not infer missing members or drop disabled records. Group links

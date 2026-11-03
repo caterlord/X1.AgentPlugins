@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.8.11 — 2026-11-03
+
+- Support Kitchen Checklist edits for existing items through the normal preview, approval and verified bulk-update flow.
+- Enable Kitchen Checklist by default for newly created items and modifier options.
+- Fix menu-import plan comparison after database storage reorders JSON properties.
+- Rediscover the current menu-edit schema and generate a fresh preview before retrying a previously unsupported Kitchen Checklist edit.
+
 ## 0.8.10 — 2026-10-21
 
 - Require the connected gateway to advertise printer creation tools before planning an approved printer creation.
