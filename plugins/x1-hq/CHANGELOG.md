@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8.13 — POS smart category maintenance
+
+- Edit the names, button styles, parent, display order and public visibility of existing POS smart categories in one approved single or bulk change set.
+- Review built-in POS menu changes when moving categories into or out of the root.
+- Require the connected gateway and HQ API to advertise smart category property support.
+
 ## 0.8.12 — Item Set Price scope
 
 - Add item Set Price guidance and operation for a shared default across groups at one shop.

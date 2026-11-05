@@ -128,6 +128,9 @@ counts before creating parent tables; preserve existing splits on ordinary edits
 
 ## Maintain existing menus
 
+For a single or bulk POS smart category property edit, including button colors
+and styles, use the [smart category maintenance workflow](references/menu-maintenance.md#pos-smart-category-properties).
+
 For category, item, modifier-group or modifier-option renames, language placement,
 POS/public/kitchen labels, metadata, prices, availability, classification, ordering,
 and modifier/meal-set structure changes, use the typed maintenance
