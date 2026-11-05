@@ -6,7 +6,7 @@ exact named tools with `find_hq_tools` if deferred, and keep the same gateway.
 
 1. Resolve the existing target with menu list/read tools. Read `get_menu_edit_context`
    for its entity ID, editable fields, field limits, version, and shared usage.
-   `category`, `item`, and `modifier_group` are supported entity types. A standalone
+   `category`, `smart_category`, `item`, and `modifier_group` are supported entity types. A standalone
    modifier option uses its existing `item` identity. Supported fields depend on
    the entity: do not manufacture field names or send full HQ update forms.
 2. For a simple name edit, pass typed `set_names` operations to `preview_menu_changes`.
@@ -101,6 +101,38 @@ is capped at 100 targets/1 MB and review at 10,000 field rows/4 MB. Oversized wo
 fails explicitly; reduce the change set or context rather than treating omitted
 rows as reviewed. These tools update existing catalog identities. Creating or copying
 items/groups/categories keeps its existing focused workflow.
+
+## POS smart category properties
+
+1. Use `list_smart_categories` to resolve active POS targets by name and hierarchy.
+   Select rows with `enabled: true` and `isOdoDisplay: false`. Use each row's
+   `smartCategoryId` as the `entityId` of a `smart_category` target.
+2. Call `get_menu_edit_context` with `includeExtended: true`. Require
+   `capabilities.features` to include `smart_category_properties_v1`. Use the
+   `buttonStyles` returned by `get_menu_authoring_context` to resolve the requested
+   style to an enabled brand-specific ID. Show the style names and IDs in the review.
+3. Use `set_names` for `primaryName` and `alternateName`. Use `set_metadata` for
+   `buttonStyleId`, `displayIndex` (a positive integer), `publicVisible`, and
+   `parentSmartCategoryId`. Clear the alternate name with `{ "action": "clear" }`.
+   Clear the parent the same way to move a category to the root. Review the
+   resulting additions or removals in the built-in POS menu when reparenting.
+4. Use one `preview_menu_changes` call with one operation per target and edit kind.
+   A single-category edit can use the same flow with one operation. Review every
+   page, obtain approval, and submit with `approve_and_commit_menu_changes`.
+
+Replace both IDs in this button-style operation with values resolved for the selected brand.
+
+```json
+{
+  "operationId": "smart-category-style-42",
+  "kind": "set_metadata",
+  "target": { "entityType": "smart_category", "entityId": 42 },
+  "changes": { "buttonStyleId": { "action": "set", "value": 30 } }
+}
+```
+
+This flow edits properties of active POS smart categories. Item membership,
+archiving, restoration, and online publication are separate workflows.
 
 ## Item Set Price and group-specific prices
 

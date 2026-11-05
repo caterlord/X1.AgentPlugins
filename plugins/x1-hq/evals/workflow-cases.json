@@ -931,6 +931,26 @@
       ]
     },
     {
+      "id": "bulk-pos-smart-category-button-styles",
+      "skill": "operate-x1-hq",
+      "prompt": "At Example Cafe, make the Lunch and Seasonal POS smart-category buttons light grey. There is also a regular Lunch category and an online Seasonal category. Show me the proposed edits first.",
+      "expectedTools": [
+        "get_mcp_gateway_status",
+        "bootstrap_hq_workspace",
+        "list_smart_categories",
+        "get_menu_edit_context",
+        "get_menu_authoring_context",
+        "preview_menu_changes"
+      ],
+      "invariants": [
+        "smart-category-ids-distinct-from-regular-categories",
+        "active-pos-smart-categories-only",
+        "brand-button-style-id-resolved",
+        "one-atomic-change-set",
+        "complete-review-before-approval"
+      ]
+    },
+    {
       "id": "shared-item-set-price-across-groups",
       "skill": "operate-x1-hq",
       "prompt": "At Central, set Milk Tea to $5 whenever it is chosen in any meal-set group. Keep the special $2 price in the Lunch Drinks group. Do not change its regular selling price.",
