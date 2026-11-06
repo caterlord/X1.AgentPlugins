@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.15 — Expanded item batch fields
+
+- Support the expanded HQ item batch-edit fields for brand metadata and shop pricing, availability and KDS routing.
+- Require an existing or explicitly staged regular price when creating a missing shop detail.
+
 ## 0.8.14 — Online Ordering smart category button styles
 
 - Preview and save one or more Online Ordering smart category button styles when the connected HQ API advertises the capability.

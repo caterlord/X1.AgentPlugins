@@ -152,6 +152,18 @@ tiles using its image and layout settings. Include that distinction in the revie
 
 ## Item Set Price and group-specific prices
 
+For item batch edits, extended HQ context advertises the current brand metadata
+fields. These include item code, display order, receipt and printed-name settings,
+manual price and name, discount and service-charge flags, points, tax, combo and
+system remark. Shop availability supports takeaway surcharge and KDS slots
+`kds1` through `kds5`, alongside printer routes. Resolve devices for the
+selected shop and review every affected item and shop.
+
+If a shop detail is missing, set both `createMissingShopDetail: true` and
+`requireExistingShopPrice: true` on its availability operation. HQ requires an
+existing legacy regular price or an explicitly staged regular price in the same
+change set. Read the HQ context and preview before requesting approval.
+
 Choose the scope from the user's request before previewing a price change:
 
 - **Item Set Price** is the default for this item across all groups at the selected shop. Use `set_item_set_price` with an `item` target, `shopId` and `price`. It writes the same setting as item `Shop Settings` -> `Additional Settings` -> `Set Price`. Do not loop over groups or change the regular selling price.
