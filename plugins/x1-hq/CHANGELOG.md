@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.16 — Reclassification approval handoff
+
+- Complete approved category and Online Ordering smart-category membership changes through the gateway’s server-issued approval handoff when the connected schema supports it.
+
 ## 0.8.15 — Expanded item batch fields
 
 - Support the expanded HQ item batch-edit fields for brand metadata and shop pricing, availability and KDS routing.
