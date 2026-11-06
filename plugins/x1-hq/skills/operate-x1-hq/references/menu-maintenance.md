@@ -134,6 +134,22 @@ Replace both IDs in this button-style operation with values resolved for the sel
 This flow edits properties of active POS smart categories. Item membership,
 archiving, restoration, and online publication are separate workflows.
 
+## Online Ordering smart category button styles
+
+Resolve the target with `list_smart_categories` using `enabled: true` and
+`isOdoDisplay: true`. For `get_menu_edit_context` with `includeExtended: true`,
+require `capabilities.features` to include `online_smart_category_button_style_v1`
+and the target's `metadataFields` to include `buttonStyleId`. The
+`names.editable` flag applies to renames.
+
+Use the same button-style operation shown above with the verified Online Ordering
+category ID and the enabled brand style ID. Send one `set_metadata` operation per
+category in a single `preview_menu_changes` call. The editable field for this
+workflow is `buttonStyleId`. Review the complete preview before approval.
+
+The edit saves the selected style in HQ. The current storefront renders category
+tiles using its image and layout settings. Include that distinction in the review.
+
 ## Item Set Price and group-specific prices
 
 Choose the scope from the user's request before previewing a price change:

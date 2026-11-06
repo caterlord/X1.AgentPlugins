@@ -951,6 +951,27 @@
       ]
     },
     {
+      "id": "bulk-online-smart-category-button-styles",
+      "skill": "operate-x1-hq",
+      "prompt": "Save the light grey button style for our Online Ordering Lunch and Seasonal smart categories. Show me the batch before applying it and tell me what customers will see today.",
+      "expectedTools": [
+        "get_mcp_gateway_status",
+        "bootstrap_hq_workspace",
+        "list_smart_categories",
+        "get_menu_edit_context",
+        "get_menu_authoring_context",
+        "preview_menu_changes"
+      ],
+      "invariants": [
+        "active-online-ordering-smart-categories",
+        "online-smart-category-button-style-capability-required",
+        "one-atomic-change-set",
+        "only-saved-button-style-edited",
+        "current-storefront-rendering-disclosed",
+        "complete-review-before-approval"
+      ]
+    },
+    {
       "id": "shared-item-set-price-across-groups",
       "skill": "operate-x1-hq",
       "prompt": "At Central, set Milk Tea to $5 whenever it is chosen in any meal-set group. Keep the special $2 price in the Lunch Drinks group. Do not change its regular selling price.",
