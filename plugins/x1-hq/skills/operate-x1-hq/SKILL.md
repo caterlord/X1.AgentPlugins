@@ -130,6 +130,8 @@ counts before creating parent tables; preserve existing splits on ordinary edits
 
 For a single or bulk POS smart category property edit, including button colors
 and styles, use the [smart category maintenance workflow](references/menu-maintenance.md#pos-smart-category-properties).
+For a saved Online Ordering smart category button style, follow the
+[Online Ordering style workflow](references/menu-maintenance.md#online-ordering-smart-category-button-styles).
 
 For category, item, modifier-group or modifier-option renames, language placement,
 POS/public/kitchen labels, metadata, prices, availability, classification, ordering,

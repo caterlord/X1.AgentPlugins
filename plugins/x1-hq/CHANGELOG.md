@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.14 — Online Ordering smart category button styles
+
+- Preview and save one or more Online Ordering smart category button styles when the connected HQ API advertises the capability.
+- Explain the effect on the saved HQ setting and how the current storefront renders categories.
+
 ## 0.8.13 — POS smart category maintenance
 
 - Edit the names, button styles, parent, display order and public visibility of existing POS smart categories in one approved single or bulk change set.
