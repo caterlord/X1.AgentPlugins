@@ -13,7 +13,7 @@ Use the narrowest task-oriented menu workflow that satisfies the outcome.
   approval token.
 - Price changes: price-adjustment preview and commit.
 - Availability: availability preview and commit.
-- Reclassification: category or smart-category preview and commit.
+- Reclassification: use `preview_reclassify_menu_items` for category or smart-category membership. Show the complete preview and, only after explicit approval of that exact preview, use `commit_reclassify_menu_items` with `approvalToken=user_explicitly_approved_final_preview` when the connected schema advertises this handoff. The gateway issues the real token internally. Never ask the customer for a token or invent one; do not use `approve_and_commit_menu_changes` for this preview. Preserve the preview and idempotency key on retries.
 - Bulk mixed changes: bulk-change preview and commit.
 - Imports: authoring context, deterministic draft validation, import preview,
   then approval-backed import commit.
