@@ -7,6 +7,9 @@ Use the narrowest task-oriented menu workflow that satisfies the outcome.
 - Discovery and context: menus, categories, items, prices, modifier groups, and
   smart categories.
 - Single-item lifecycle: manage-menu-item preview and commit.
+- New items default to showing the item and price on receipts/invoices,
+  appearing on the kitchen checklist, and being available for dine-in,
+  takeaway, and delivery orders. Pass explicit overrides in the create payload.
 - After the customer explicitly approves a displayed single-item preview, use
   `approve_and_commit_menu_item` so the gateway issues and consumes the
   approval internally; never ask the customer or assistant to supply an

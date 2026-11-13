@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.18 — HQ defaults for new menu items
+
+- Enable item and price printing on receipts and invoices, the kitchen checklist, and dine-in, takeaway, and delivery for new items by default.
+- Show the new-item defaults in import previews and honor explicit order-type restrictions.
+
 ## 0.8.17 — Same-name menu items
 
 - Keep separate menu items with identical display names and distinct item codes. Preview generates a unique code for each new item without a source code.
