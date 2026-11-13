@@ -173,9 +173,12 @@ names or rerun creates. Missing lineage requires reconciliation.
   an explicit, active taxation setting that conflicts with that treatment. A
   failed or unavailable optional taxation lookup is not such a conflict and
   must not trigger a customer question.
-- Do not infer delivery, online, or kiosk availability from dine-in/takeaway
-  wording. Default unmentioned channels to disabled; do not ask merely because
-  the source is silent.
+- For new sellable items and standalone modifier items, keep HQ's defaults for
+  item and price printing on receipts/invoices and the kitchen checklist.
+  Dine-in, takeaway, and delivery default to enabled. Record explicit order-type
+  restrictions in `source.channelIntent`. Leave unmentioned order types
+  unspecified so preview applies the defaults. Online Ordering and kiosk
+  publication require explicit intent.
 - Set modifier-group channel availability on the group header: POS uses
   `isPosDisplay` and Online Ordering uses `isOdoDisplay`. Every item mapped to
   that group inherits the same channel availability. Never model or describe
