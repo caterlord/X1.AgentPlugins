@@ -100,6 +100,10 @@ names or rerun creates. Missing lineage requires reconciliation.
   form `{CATEGORY_CODE}-{5 uppercase alphanumeric characters}`. Standalone
   modifier options receive an item code from the HQ modifier category by the
   same rule; linked options reuse the linked sellable item's code.
+- Keep identical sellable-item names when they represent separate entries,
+  including a drink sold both on its own and in a combo. Each separate item
+  needs its own code. Leave missing codes for preview to generate. To update an
+  existing sellable item, use its verified HQ code as the target.
 - Preserve page/row/region/text evidence and extraction confidence. Do not keep
   raw file bytes or image crops in the draft.
 - Use `localizedNames`, `salesUnit`, and `portionQuantity` instead of hiding
