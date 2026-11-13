@@ -1,9 +1,9 @@
-adc540a2aaf3a06ff8343b3bef229f8129f6db6ab90c9434fa878add8c078817  plugins/x1-hq/CHANGELOG.md
+3f8b538b10935a64ee7e97425c43634a41df738c8d49f2bc0e35170dcffeb651  plugins/x1-hq/CHANGELOG.md
 bf57a531cb4af336be83e7bed0787bf64ed8b2e76b13f102d6388d034c81e974  plugins/x1-hq/INSTALLATION.md
 1fc19f89667ffd8c3537347644e24d2a39aa53ea4936da5023a0635167471c11  plugins/x1-hq/README.md
 1f3c058e647fd627920d355c9c9c8c7bd5ed39db24f24f041c43fbee60ae7237  plugins/x1-hq/evals/workflow-cases.json
 02c0613f6a67fb581f42723ef0869de07a1093ef422dd7f7ecb88e6c0e82f438  plugins/x1-hq/mcp.json
-2b3a22366b79f8a562fb9bff11a384bfbed2737b3ad22ccb36a35d08ce13ae24  plugins/x1-hq/plugin.json
+02876834f9896c18f58da6ff37087115b92310fdceb4d565b47eaa0adb78d423  plugins/x1-hq/plugin.json
 02b19604f9b7b6b3f2949b4fd2af3ec6436403357be3b5a0c17979da587a0af8  plugins/x1-hq/schemas/README.md
 4c357db0e4359280ce055b98bf167fca548bed3a8992391d4ecff64276e3e6c7  plugins/x1-hq/schemas/mcp.schema.json
 cc65b53b668db7038f8ce1473c00f41740303ea0a0ec3e2c694e63cb51bfe0a2  plugins/x1-hq/schemas/plugin.schema.json
@@ -13,7 +13,7 @@ db34b564a24baca30fa69af1276b59fe9f56e61e497411e80513c8066ac3a55e  plugins/x1-hq/
 4cbd3ece43f79b26b5aae290995557f0639509eebbec748cd4e4589853be2ee4  plugins/x1-hq/skills/analyze-x1-hq-reports/references/dates-metrics-and-caveats.md
 6025d0401fbe02ccdb5de095dcd32e0c55109992824bd4c550fa2c1e0c19c043  plugins/x1-hq/skills/analyze-x1-hq-reports/references/privacy-and-operational-handoff.md
 a56385957d29060727c4727d132c0376fea5f6fc7d8908481dc8e2ea7863167e  plugins/x1-hq/skills/analyze-x1-hq-reports/references/report-routing.md
-360bf874e22059ac4bd7fb6eda8c46e2d958e53405b708fa0574d7d1a1d30ed6  plugins/x1-hq/skills/import-menu-from-document/SKILL.md
+383f82a3f1aaf40b6e407a45cf20172ac16382e20f45c00530d06a79beeafd0c  plugins/x1-hq/skills/import-menu-from-document/SKILL.md
 ea77897e6bcd870c74ed076b7b4b2f4db0442214862f55ce77691f6904b41f2f  plugins/x1-hq/skills/import-menu-from-document/agents/openai.yaml
 824e42647da652a39d5bdcfbef6eaa12935078b2876f15fdcf0786cc787d3f5f  plugins/x1-hq/skills/import-menu-from-document/references/capabilities.md
 4e688fe51fd545a77dc12b44600b116dd5657874819382c0acf5c496379a5141  plugins/x1-hq/skills/import-menu-from-document/references/document-extraction.md

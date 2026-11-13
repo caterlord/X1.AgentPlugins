@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.17 — Same-name menu items
+
+- Keep separate menu items with identical display names and distinct item codes. Preview generates a unique code for each new item without a source code.
+- Match existing sellable items by item code and use the referenced item's code for linked modifier options.
+
 ## 0.8.16 — Reclassification approval handoff
 
 - Complete approved category and Online Ordering smart-category membership changes through the gateway’s server-issued approval handoff when the connected schema supports it.
