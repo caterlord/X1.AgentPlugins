@@ -4,7 +4,7 @@ description: Analyze X1 HQ sales, item and category performance, payments, order
 compatibility: Requires an Agent Plugins client with Agent Skills and Streamable HTTP MCP support, plus access to the X1 HQ MCP gateway.
 metadata:
   author: X1
-  version: "0.1.4"
+  version: "0.2.0"
 ---
 
 # Analyze X1 HQ reports
@@ -38,10 +38,32 @@ not establish that this gateway is unavailable.
 - Read [references/capabilities.md](references/capabilities.md) when routing a
   report request.
 
-If the exact report tool is not callable, use `find_hq_tools` with a concise
-report query and `modes=["read"]`, then invoke an exact returned match through
-`call_hq_read_tool` using its returned input schema. Never use a preview or
-commit dispatcher in this read-only skill, and never guess a hidden tool name.
+## Run reports in the background
+
+After resolving the workspace and report filters, submit every supported report through
+`call_hq_read_tool`, including short periods and reports exposed as direct tools.
+This applies to each report in a multi-report answer and to an explicitly requested
+reservation board with `booking.read`. Use `find_hq_tools` to resolve an unfamiliar
+report name or input schema.
+
+1. Pass `toolName`, the report's original `arguments`, and a fresh `reportRequestId`
+   as sibling fields. Use one request ID per report. If a submission response is lost,
+   retry with the same ID, tool, arguments and selected scope.
+2. Keep the returned `result.taskId`. Check `get_task_status` with that ID,
+   `waitMs=0` and `includeResult=false`. If status is available only through
+   `call_hq_read_tool`, dispatch it without a report request ID.
+3. On success, request `includeResult=true`. Read `result.report` and pass each
+   `result.nextOffset` as `reportOffset` until the requested detail is covered or
+   the offset is null. Count repeated summary totals once. Preserve HQ's row limits,
+   truncation flags, currency and coverage caveats.
+4. While queued or running, keep the ID for the next check. If the turn ends,
+   give the user the ID so they can resume within 24 hours in the same scope.
+   On failure or changed access, surface the gateway's explanation. Only submit
+   a fresh job when a new run is needed.
+
+If the connected gateway's dispatcher schema lacks `reportRequestId`, use its
+advertised synchronous report workflow and explain the compatibility fallback.
+A slow response or an existing task ID is a reason to resume the same request.
 
 ## Establish scope
 

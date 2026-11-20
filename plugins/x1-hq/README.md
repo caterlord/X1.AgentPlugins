@@ -9,7 +9,7 @@ ChatGPT app dependency:
   devices, online ordering, and other capabilities exposed by the gateway.
 - `manage-tables-and-floorplans` handles dining tables and editable seating layouts.
 - `publish-menu-online` handles online menus, photos and test QR verification.
-- `analyze-x1-hq-reports` handles read-only reporting and investigation.
+- `analyze-x1-hq-reports` runs reports as background tasks on compatible gateways. Keep the task ID to resume in the same workspace within 24 hours.
 - `import-menu-from-document` handles resumable PDF, image, spreadsheet, CSV,
   and pasted-menu extraction, complete table review, explicit approval, and
   server-side approved commit handoff.

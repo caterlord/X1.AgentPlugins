@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.0 — Background reports
+
+- Submit all supported reports as resumable tasks on compatible gateways, including short sales queries and authorized reservation-board requests.
+- Resume the same task after a lost response and retrieve paged results with the original HQ totals and coverage flags.
+
 ## 0.8.18 — HQ defaults for new menu items
 
 - Enable item and price printing on receipts and invoices, the kitchen checklist, and dine-in, takeaway, and delivery for new items by default.
