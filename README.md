@@ -19,6 +19,9 @@ that the client loaded the plugin's workflow instructions. If your client also
 supports Agent Skills separately, use the skills from this same package through
 its documented skill-loading mechanism.
 
+For Microsoft 365 Copilot Chat, see the [X1 HQ declarative agent projects](microsoft-365/copilot-chat/README.md)
+for development and tenant testing.
+
 For Grok Bot, see the [installation routes below](#grok-bot). A marketplace
 import limitation does not mean X1 is Codex/ChatGPT-only. Clients that support
 only remote MCP can connect to the endpoint above, but should describe that as

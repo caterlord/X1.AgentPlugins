@@ -1,0 +1,143 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/plugin/v2.4/schema.json",
+  "schema_version": "v2.4",
+  "name_for_human": "X1 HQ Reporting",
+  "description_for_human": "Read sales summaries and resolve authorized workspaces in X1 HQ.",
+  "namespace": "X1HQReporting",
+  "functions": [
+    {
+      "name": "get_mcp_gateway_status",
+      "description": "Return the safe operator status, circuit-breaker impact, policy epoch, and schema marker for the current action list."
+    },
+    {
+      "name": "bootstrap_hq_workspace",
+      "description": "Start an authenticated X1 HQ connection by resolving the user's workspace and optional company, brand, or shop names. Selects and persists a unique match; otherwise returns the shortest candidate list the user must disambiguate. Call this before any non-bootstrap HQ tool."
+    },
+    {
+      "name": "get_brand_sales_summary",
+      "description": "Return a normalized sales summary for a brand and optional shop subset over a requested date range."
+    }
+  ],
+  "runtimes": [
+    {
+      "type": "RemoteMCPServer",
+      "auth": {
+        "type": "OAuthPluginVault",
+        "reference_id": "${{X1_MCP_AUTH_ID}}"
+      },
+      "spec": {
+        "url": "https://x1hq-mcp-staging.azurewebsites.net/mcp",
+        "mcp_tool_description": {
+          "tools": [
+            {
+              "name": "get_mcp_gateway_status",
+              "description": "Return the safe operator status, circuit-breaker impact, policy epoch, and schema marker for the current action list.",
+              "inputSchema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {}
+              },
+              "annotations": {
+                "title": "get_mcp_gateway_status",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true,
+                "openWorldHint": false
+              }
+            },
+            {
+              "name": "bootstrap_hq_workspace",
+              "description": "Start an authenticated X1 HQ connection by resolving the user's workspace and optional company, brand, or shop names. Selects and persists a unique match; otherwise returns the shortest candidate list the user must disambiguate. Call this before any non-bootstrap HQ tool.",
+              "inputSchema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "workspaceName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional workspace name supplied by the user."
+                  },
+                  "companyName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional company name supplied by the user."
+                  },
+                  "brandName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional brand name supplied by the user."
+                  },
+                  "shopName": {
+                    "type": "string",
+                    "minLength": 1,
+                    "description": "Optional shop name supplied by the user."
+                  }
+                }
+              },
+              "annotations": {
+                "title": "bootstrap_hq_workspace",
+                "readOnlyHint": false,
+                "destructiveHint": true,
+                "idempotentHint": false,
+                "openWorldHint": false
+              }
+            },
+            {
+              "name": "get_brand_sales_summary",
+              "description": "Return a normalized sales summary for a brand and optional shop subset over a requested date range.",
+              "inputSchema": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "brandId": {
+                    "type": "integer",
+                    "minimum": 1,
+                    "description": "HQ brand identifier."
+                  },
+                  "fromDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Calendar date in ISO format YYYY-MM-DD."
+                  },
+                  "toDate": {
+                    "type": "string",
+                    "format": "date",
+                    "description": "Calendar date in ISO format YYYY-MM-DD."
+                  },
+                  "shopIds": {
+                    "type": "array",
+                    "description": "Optional list of HQ shop identifiers.",
+                    "items": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "description": "HQ shop identifier."
+                    },
+                    "uniqueItems": true,
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "brandId",
+                  "fromDate",
+                  "toDate"
+                ]
+              },
+              "annotations": {
+                "title": "get_brand_sales_summary",
+                "readOnlyHint": true,
+                "destructiveHint": false,
+                "idempotentHint": true,
+                "openWorldHint": false
+              }
+            }
+          ]
+        }
+      },
+      "run_for_functions": [
+        "get_mcp_gateway_status",
+        "bootstrap_hq_workspace",
+        "get_brand_sales_summary"
+      ]
+    }
+  ]
+}

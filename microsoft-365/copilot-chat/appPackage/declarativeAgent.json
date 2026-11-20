@@ -1,0 +1,23 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/copilot/declarative-agent/v1.7/schema.json",
+  "version": "v1.7",
+  "name": "X1 HQ Pilot",
+  "description": "Read sales totals and transaction counts for your authorized X1 HQ locations.",
+  "instructions": "$[file('instructions.txt')]",
+  "conversation_starters": [
+    {
+      "title": "Find my workspace",
+      "text": "Show the X1 HQ workspace I can access."
+    },
+    {
+      "title": "Review last week's sales",
+      "text": "What were net sales and transaction count last week?"
+    }
+  ],
+  "actions": [
+    {
+      "id": "x1HQReporting",
+      "file": "ai-plugin.json"
+    }
+  ]
+}
